@@ -1,3 +1,20 @@
+# MELCOR files
+melcor-fusion-186_bdba
+melgen-fusion-186_bdba
+
+*.DIA
+*.MES
+*.OUT
+*.PTF
+*.RST
+*.dia
+*.out
+extDIAG
+MEGDIA
+MEGOUT
+MELDIA
+MELOUT
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
