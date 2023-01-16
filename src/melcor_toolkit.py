@@ -86,14 +86,13 @@ def extract_field(pattern, content):
 
 
 def read_CVs(filename):
-    cvs = []
-
     with open(filename, 'r') as file:
         content = file.read()
 
     # Get IDs
     cv_ids = set(re.findall(r'CV\d{3}', content))
-
+    
+    cvs = []
     for id in cv_ids:
         cv = CV(id=id)
         cv.name = extract_field(id + '00\s+', content)
