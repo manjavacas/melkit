@@ -118,7 +118,7 @@ def get_CV(cvs, id):
 
 def run(filename):
 
-    # --------------- CVS --------------- #
+    # --------------- CVs --------------- #
 
     # Read CVs from file
     cvs = read_CVs(filename)
@@ -137,7 +137,7 @@ def run(filename):
     # Change CV in file
     ## TO-DO ##
 
-    # --------------- FLS --------------- #
+    # --------------- FLs --------------- #
     ## TO-DO ##
 
 
