@@ -1,5 +1,5 @@
-parse:
-	python3 src/melcor_toolkit.py inputs/sample.inp
+run:
+	python3 run_melkit.py ./inputs/sample.inp
 test: clean
 	./melgen-fusion-186_bdba inputs/sample.inp
 	./melcor-fusion-186_bdba inputs/sample.inp

@@ -1,0 +1,1 @@
+CARD_WIDTH = 22
