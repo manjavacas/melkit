@@ -2,7 +2,7 @@ import re
 
 from .inputs import CV, FL
 
-
+# TO-REMOVE
 def extract_field(pattern, content):
     match = re.search(pattern, content)
     return content[match.end():].split()[0] if match else None
