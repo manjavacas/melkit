@@ -13,7 +13,7 @@ class CV():
         h2o=None,
         n2=None,
         o2=None,
-        altitude=None,
+        height=None,
         volume=None
     ):
         self.id = id
@@ -25,7 +25,7 @@ class CV():
         self.h2o = h2o
         self.n2 = n2
         self.o2 = o2
-        self.altitude = altitude
+        self.height = height
         self.volume = volume
 
     def __str__(self):
@@ -45,8 +45,8 @@ class FL():
         name=None,
         from_cv=None,
         to_cv=None,
-        from_altitude=None,
-        to_altitude=None,
+        from_height=None,
+        to_height=None,
         area=None,
         length=None,
         hyd_diam=None,
@@ -58,8 +58,8 @@ class FL():
         self.name = name
         self.from_cv = from_cv
         self.to_cv = to_cv
-        self.from_altitude = from_altitude
-        self.to_altitude = to_altitude
+        self.from_height = from_height
+        self.to_height = to_height
         self.area = area
         self.length = length
         self.hyd_diam = hyd_diam

@@ -1,5 +1,5 @@
 run:
-	python3 run_melkit.py ./inputs/sample.inp
+	python3 run_melkit.py ./sample_files/sample.inp
 test: clean
 	./melgen-fusion-186_bdba inputs/sample.inp
 	./melcor-fusion-186_bdba inputs/sample.inp
