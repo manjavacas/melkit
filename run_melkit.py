@@ -1,34 +1,36 @@
-from melkit.gen_tools import *
+from melkit.toolkit import Toolkit
 import sys
 
 def run(filename):
 
+    toolkit = Toolkit(filename)
+
     # --------------- CVs --------------- #
 
     # Read CVs from file
-    cvs = read_volumes(filename)
+    cvs = toolkit.read_cvs()
 
     # Find CV by ID
-    cv001 = id_search(cvs, id='CV001')
-    cv002 = id_search(cvs, id='CV002')
+    cv001 = toolkit.id_search(cvs, id='CV001')
+    # cv002 = id_search(cvs, id='CV002')
 
     # Edit CV attribute
     cv001.name = 'LLC'
-    # print(cv001)
+    print(cv001)
 
-    cv002.name = 'Corridor'
+    # cv002.name = 'Corridor'
     # print(cv002)
 
     # Change CV in file
-    ## TO-DO ##
+    toolkit.edit_cv(cv001)
 
     # --------------- FLs --------------- #
     
     # Read FLs from file
-    fls = read_flowpaths(filename)
+    # fls = read_flowpaths(filename)
 
     # Find FL by ID
-    fl001 = id_search(fls, id='FL001')
+    # fl001 = id_search(fls, id='FL001')
     # print(fl001)
 
 
