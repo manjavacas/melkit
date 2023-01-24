@@ -1,1 +1,2 @@
 CARD_WIDTH = 22
+COMMENT_CHAR = '*'

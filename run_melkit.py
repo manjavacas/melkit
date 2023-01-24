@@ -1,5 +1,7 @@
 from melkit.toolkit import Toolkit
+from melkit.inputs import CV
 import sys
+
 
 def run(filename):
 
@@ -12,20 +14,23 @@ def run(filename):
 
     # Find CV by ID
     cv001 = toolkit.id_search(cvs, id='CV001')
-    # cv002 = id_search(cvs, id='CV002')
 
     # Edit CV attribute
     cv001.name = 'LLC'
-    print(cv001)
+    toolkit.update_cv(cv001, new_file='sample_files/test_edit.inp', ignore_comments=False)
+    
+    # Search CV by ID
+    # cv001 = toolkit.id_search(cvs, id='CV001')
 
-    # cv002.name = 'Corridor'
-    # print(cv002)
+    # Write new CV
+    # cv003 = CV(id='CV003')
+    # toolkit.write_cv(cv003, new_file='sample_files/test_write.inp')
 
-    # Change CV in file
-    toolkit.edit_cv(cv001)
+    # Remove CV
+    # toolkit.remove_cv('CV003', new_file='sample_files/test_delete.inp')
 
     # --------------- FLs --------------- #
-    
+
     # Read FLs from file
     # fls = read_flowpaths(filename)
 

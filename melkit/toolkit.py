@@ -1,6 +1,7 @@
 import re
 
 from .inputs import CV, FL
+from .constants import COMMENT_CHAR
 
 
 class Toolkit:
@@ -68,9 +69,43 @@ class Toolkit:
             fls.append(fl)
 
         return fls
+    # TO-FIX
 
-    def edit_cv(self, id):
-        pass
+    def update_cv(self, cv, new_file=None, ignore_comments=False):
+        self.remove_cv(cv.id, new_file, ignore_comments)
+        self.write_cv(cv, new_file, ignore_comments)
+
+    # TO-FIX
+    def remove_cv(self, cv_id, new_file=None, ignore_comments=False):
+        if not new_file:
+            new_file = self.filename
+
+        with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
+            for line in f1:
+                if not line.startswith(cv_id):
+                    if not (ignore_comments and line.startswith(COMMENT_CHAR)):
+                        f2.write(line)
+                else:
+                    print('[deleted] ' + line)
+    # TO-FIX
+
+    def write_cv(self, cv, new_file=None, ignore_comments=False):
+        if not new_file:
+            new_file = self.filename
+
+        # TO-IMPROVE
+        cv_str = f'{cv.id}00   {cv.name}  2  0  1\n{cv.id}01   0   0\n{cv.id}A0   3\n{cv.id}A1   PVOL  {cv.pressure}\n{cv.id}A2   TATM  {cv.temperature} RHUM {cv.humidity}\n{cv.id}A3   MLFR.8  {cv.ar}\n{cv.id}A4   MLFR.5  {cv.o2}\n{cv.id}A5   MLFR.4  {cv.n2}\n{cv.id}B1   0.0      0.0\n{cv.id}B2   {cv.height}     {cv.volume}\n'
+
+        with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
+            lines = f1.read().split('\n')
+            for i, line in enumerate(lines):
+                if line.startswith('CV'):
+                    lines.insert(i, cv_str)
+                    break
+            f2.seek(0)
+            for line in lines:
+                if not (ignore_comments and line.startswith(COMMENT_CHAR)):
+                    f2.write(line + '\n')
 
     def id_search(self, element_list, id):
         return [x for x in element_list if x.id == id][0]

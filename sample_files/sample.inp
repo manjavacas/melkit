@@ -30,18 +30,18 @@ NCG555    AR    8                                   * MATERIAL 8 IS AR
 *-----------------------------------------------                                                                
 * CV001                                                                   
 *-----------------------------------------------                                                                
-CV00100   R001  2  0  1                                                            
-CV00101   0   0		                                
-CV001A0   3                                                                                         
+CV00100   R001  2  0  1
+CV00101   0   0
+CV001A0   3
 CV001A1   PVOL  101235.0                            * 101325 - 90 Pa
 CV001A2   TATM  290.95  RHUM  0.0                   * 17.8 deg. C; 0% rel. humidity
-CV001A3   MLFR.8  0.9999                            * Ar 
+CV001A3   MLFR.8  0.9999                            * Ar
 CV001A4   MLFR.5  0.000021                          * 02
 CV001A5   MLFR.4  0.000079                          * N2
-*** 
-***       ALTITUDE/VOLUME Table                                                                                                
-***                                                                
-CV001B1   0.0      0.0                                                            
+***
+***       ALTITUDE/VOLUME Table
+***
+CV001B1   0.0      0.0
 CV001B2   7.2      2658.7
 ***
 *

@@ -6,18 +6,18 @@ class CV():
         self,
         id,
         name=None,
-        pressure=None,
-        humidity=None,
-        temperature=None,
-        ar=None,
-        h2o=None,
-        n2=None,
-        o2=None,
-        height=None,
-        volume=None
+        pressure=0,
+        humidity=0,
+        temperature=0,
+        ar=0,
+        h2o=0,
+        n2=0,
+        o2=0,
+        height=0,
+        volume=0
     ):
         self.id = id
-        self.name = name
+        self.name = self.id if not name else name
         self.pressure = pressure
         self.humidity = humidity
         self.temperature = temperature
