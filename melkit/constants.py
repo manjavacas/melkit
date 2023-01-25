@@ -1,2 +1,1 @@
-CARD_WIDTH = 22
-COMMENT_CHAR = '*'
+CV_KEYS = ['PVOL', 'TATM', 'RHUM', 'MLFR.4', 'MLFR.5', 'MLFR.8']
