@@ -23,8 +23,8 @@ def run(filename):
     # })
     # print(cv001)
 
-    # for cv in toolkit.read_cvs():
-    #     print(cv)
+    for cv in toolkit.read_cvs():
+        print(cv)
 
     # print(toolkit.get_cv('CV001'))
 

@@ -55,6 +55,10 @@ class Toolkit:
                         elif match(r'B[1-9]', record_id[-2:]):
                             record_data['ALTITUDE'] = record[1]
                             record_data['VOLUME'] = record[2]
+                        elif match(r'C[1-9]', record_id[-2:]):
+                            record_data['CTYP'] = record[1]
+                            record_data['IESTYP'] = record[2]
+                            record_data['IESFLG'] = record[3]
                         else:
                             raise ParseException(
                                 cv_id, f'Unknown record: {record_id}')
