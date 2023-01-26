@@ -72,11 +72,37 @@ class Toolkit:
     def update_cv(self):
         raise NotImplementedError
 
-    def remove_cv(self, cv_id, new_file=None, ignore_comments=False):
-        raise NotImplementedError
+    def remove_cv(self, cv_id, new_file=None):
+        '''
+        Deletes the records of a CV in an input file.
+        '''
+
+        new_file = new_file or self.filename
+
+        with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
+            for line in f1:
+                if not line.startswith(cv_id):
+                    f2.write(line)
 
     def write_cv(self, cv, new_file=None, ignore_comments=False):
         raise NotImplementedError
 
-    def id_search(self, element_list, id):
-        raise NotImplementedError
+    def remove_comments(self, new_file=None):
+        '''
+        Remove comments from input file
+        '''
+        
+        new_file = new_file or self.filename
+        
+        with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
+            for line in f1:
+                if not line.startswith('*'):
+                    f2.write(line)
+
+    def id_search(self, list, id):
+        '''
+        Searches for an input object (CV, FL...) by its ID in a list of input elements.
+        '''
+        return [x for x in list if f'{id}00' in x.records.keys()][0]
+            
+

@@ -23,10 +23,16 @@ def run(filename):
     # })
     # print(cv001)
 
-    for cv in toolkit.read_cvs():
-        print(cv)
+    # for cv in toolkit.read_cvs():
+    #     print(cv)
 
     # print(toolkit.get_cv('CV001'))
+
+    # cv_list = toolkit.read_cvs()
+    # print(toolkit.id_search(cv_list, 'CV001'))
+
+    # toolkit.remove_cv('CV001', new_file='rm_output.inp')
+    # toolkit.remove_comments(new_file='rm_comments_output.inp')
 
 if __name__ == '__main__':
     run(sys.argv[1])
