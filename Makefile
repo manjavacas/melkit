@@ -20,4 +20,5 @@ clean:
 	rm -f MEGOUT
 	rm -f MELDIA
 	rm -f MELOUT
+	rm -f MELRST
 	rm -rf ./melkit/__pycache__
