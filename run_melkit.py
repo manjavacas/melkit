@@ -31,8 +31,23 @@ def run(filename):
     # cv_list = toolkit.read_cvs()
     # print(toolkit.id_search(cv_list, 'CV001'))
 
-    # toolkit.remove_cv('CV001', new_file='rm_output.inp')
-    # toolkit.remove_comments(new_file='rm_comments_output.inp')
+    # toolkit.remove_cv('CV001')
+    toolkit.remove_comments()
+
+    # cv003 = CV({
+    #     'CV00300': {'CVNAME': 'R003', 'ICVTHR': 2, 'ICVFF': 0, 'ICVTYP': 1},
+    #     'CV00301': {'IPFSW': 0, 'ICVACT': 0},
+    #     'CV003A0': {'ITYPTH': 3},
+    #     'CV003A1': {'PVOL': 101235},
+    #     'CV003A2': {'TATM': 290.95, 'RHUM': 0.0},
+    #     'CV003A3': {'MLFR.8': 0.9999},
+    #     'CV003A3': {'MLFR.5': 0.000021},
+    #     'CV003A3': {'MLFR.4': 0.000079},
+    #     'CV003B1': {'ALTITUDE': 0.0, 'VOLUME': 0.0},
+    #     'CV003B2': {'ALTITUDE': 7.2, 'VOLUME': 2658.7}
+    # })
+
+    # toolkit.write_cv(cv003)
 
 if __name__ == '__main__':
     run(sys.argv[1])
