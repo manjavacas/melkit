@@ -1,4 +1,4 @@
-
+from os import remove
 from re import search, match
 from .exceptions import ParseException
 from .inputs import CV
@@ -111,8 +111,28 @@ class Toolkit:
                 elif '*' in line:
                     f2.write(line[:line.find('*')])
 
-    def update_cv(self):
-        raise NotImplementedError
+    def update_cv(self, cv, new_file=None):
+        '''
+        Updates CV input information.
+        '''
+
+        cv_id = list(cv.records.keys())[0][:5]
+
+        tmp_file = self.filename + '_TMP'
+        new_file = new_file or self.filename + '_NEW'
+
+        self.remove_cv(cv_id, new_file=tmp_file)
+
+        with open(tmp_file, 'r') as f1, open(new_file, 'w') as f2:
+            written = False
+            for line in f1:
+                if line.startswith('CV') and not written:
+                    f2.write(str(cv) + '\n' + line)
+                    written = True
+                else:
+                    f2.write(line)
+
+        remove(self.filename + '_TMP')
 
     def id_search(self, list, id):
         '''
