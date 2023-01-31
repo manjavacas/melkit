@@ -10,31 +10,34 @@ class Toolkit:
     def __init__(self, filename):
         self.filename = filename
 
+#------------------- CRUD TOOLS -------------------#
+
+    def read_object(self, id_regex):
+        '''
+        Looks for objects in the input file according to given ID regex
+        '''
+        ids, objs = [], []
+        with open(self.filename, 'r') as file:
+            for line in file:
+                id = search(id_regex, line)
+                if id and id not in ids:
+                    if 'CV' in id_regex:
+                        objs.append(self.get_cv(id.group()[:-2]))
+                    elif 'FL' in id_regex:
+                        objs.append(self.get_fl(id.group()[:-2]))
+        return objs
+
     def read_cvs(self):
         '''
         Looks for CVs in the input file and returns them as a list of CV objects.
         '''
-        ids, cvs = [], []
-
-        with open(self.filename, 'r') as file:
-            for line in file:
-                id = search(r'\bCV\d{3}00\b', line)
-                if id and id not in ids:
-                    cvs.append(self.get_cv(id.group()[:-2]))
-        return cvs
+        return self.read_object(r'\bCV\d{3}00\b')
 
     def read_fls(self):
         '''
         Looks for FLs in the input file and returns them as a list of FL objects.
         '''
-        ids, fls = [], []
-
-        with open(self.filename, 'r') as file:
-            for line in file:
-                id = search(r'\bFL\d{3}00\b', line)
-                if id and id not in ids:
-                    fls.append(self.get_fl(id.group()[:-2]))
-        return fls
+        return self.read_object(r'\bFL\d{3}00\b')
 
     def get_cv(self, cv_id):
         '''
@@ -135,6 +138,9 @@ class Toolkit:
                         elif termination == '0T':
                             record_data['ZBJTO'] = record[1]
                             record_data['ZTJTO'] = record[2]
+                        elif match(r'.*T[0-9]', termination):
+                            record_data['NTFLAG'] = record[1]
+                            record_data['NFUN'] = record[2]
                         elif match(r'B[0-9]', termination):
                             record_data['PKG'] = record[1]
                             record_data['OPTION'] = record[2]
@@ -214,6 +220,16 @@ class Toolkit:
                     f2.write(line)
 
         remove(self.filename + '_TMP')
+
+#------------------- PLOT TOOLS -------------------#
+
+    def get_last_values(self, datafile):
+        raise NotImplemented
+    
+    def plot_edf(self, datafile):
+        raise NotImplemented
+
+#------------------- AUX TOOLS -------------------#
 
     def remove_comments(self, new_file=None):
         '''

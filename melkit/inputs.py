@@ -1,16 +1,15 @@
-
-from re import match
-
 from .constants import CV_KEYS
 
 
-class CV():
+class Object():
     def __init__(
         self,
         records=None
     ):
         self.records = records or {}
 
+
+class CV(Object):
     def __str__(self):
         cv_str = []
         for record_id, attributes in self.records.items():
@@ -24,18 +23,12 @@ class CV():
         return ''.join(cv_str)
 
 
-class FL():
-    def __init__(
-        self,
-        records=None
-    ):
-        self.records = records or {}
-
+class FL(Object):
     def __str__(self):
-        cv_str = []
+        fl_str = []
         for record_id, attributes in self.records.items():
-            cv_str.append(f'{record_id}\t')
+            fl_str.append(f'{record_id}\t')
             for value in attributes.values():
-                cv_str.append(f'{value}\t')
-            cv_str.append('\n')
-        return ''.join(cv_str)
+                fl_str.append(f'{value}\t')
+            fl_str.append('\n')
+        return ''.join(fl_str)
