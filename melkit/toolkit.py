@@ -223,9 +223,45 @@ class Toolkit:
 
 #------------------- PLOT TOOLS -------------------#
 
+    def get_edf_vars(self):
+        '''
+        Returns a list of variable names based on EDF records in file.
+        '''
+        keys = ['TIME']
+        with open(self.filename, 'r') as file:
+            for line in file:
+                if match(r'\bEDF\d{3}[A-Z][A-Z0-9]', line):
+                    keys.append(line.split()[1])
+        return keys
+
     def get_last_values(self, datafile):
-        raise NotImplemented
-    
+        '''
+        Returns the last values of an EDF output file.
+        '''
+        with open(datafile, 'r') as file:
+            for line in file:
+                pass
+            last_line = line
+        return last_line.split()
+
+    def get_last_values_dict(self, datafile):
+        '''
+        Returns the last values of an EDF output file with the corresponding variable names.
+        '''
+        values = self.get_last_values(datafile)
+        keys = ['TIME'] + self.get_edf_vars(datafile)
+
+        return dict(zip(keys, values))
+
+    def as_dataframe(self, datafile):
+        '''
+        Converts an output EDF file to a Pandas dataframe
+        '''
+        import pandas as pd
+        df = pd.read_csv(datafile, sep='\s+', header=None)
+        df.columns = self.get_edf_vars()
+        return df
+
     def plot_edf(self, datafile):
         raise NotImplemented
 

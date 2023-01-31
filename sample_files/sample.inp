@@ -31,8 +31,8 @@ EDF11100 VARIAB 2 WRITE
 EDF11101 ./OUTPUTS/variables.dat
 EDF11102 8E12.4
 EDF11110 0.      1.
-EDF111AA CVH-P.1      
-EDF111AB FL-MFLOW.4.1         
+EDF111AA CVH-P.1
+EDF111AB FL-MFLOW.4.1
 *
 ****************************************************************************************************************************************
 *        												CV (Control Volumes) INPUT									                   *
