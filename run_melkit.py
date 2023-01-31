@@ -2,13 +2,20 @@ from melkit.toolkit import Toolkit
 from melkit.inputs import CV, FL
 import sys
 
+import matplotlib.pyplot as plt
+
 OUTPUT_FILE = 'OUTPUTS/VARIABLES.DAT'
 
 def run(filename):
 
+    filename = "./sample_files/sample2.inp"
     toolkit = Toolkit(filename)
 
-    print(toolkit.as_dataframe(OUTPUT_FILE))
+    # df = toolkit.as_dataframe(OUTPUT_FILE)
+    # print(df)
+    # df.plot(x='TIME', y='CVH-P.16')
+    # plt.show()
+
 
 if __name__ == '__main__':
     run(sys.argv[1])

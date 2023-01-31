@@ -221,7 +221,7 @@ class Toolkit:
 
         remove(self.filename + '_TMP')
 
-#------------------- PLOT TOOLS -------------------#
+#------------------- EDF TOOLS -------------------#
 
     def get_edf_vars(self):
         '''
@@ -255,7 +255,7 @@ class Toolkit:
 
     def as_dataframe(self, datafile):
         '''
-        Converts an output EDF file to a Pandas dataframe
+        Converts an output EDF file to a Pandas dataframe.
         '''
         import pandas as pd
         df = pd.read_csv(datafile, sep='\s+', header=None)
@@ -276,10 +276,12 @@ class Toolkit:
 
         with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
-                if '*EOR*' in line or line.startswith('.') or not line.startswith('*'):
+                if line.startswith('*') and '*EOR*' not in line:
+                    f2.write('')
+                elif '*' in line and '*EOR*' not in line:
+                    f2.write(line[:line.find('*')] + '\n')
+                else:
                     f2.write(line)
-                elif '*' in line:
-                    f2.write(line[:line.find('*')])
 
     def id_search(self, obj_list, id):
         '''
