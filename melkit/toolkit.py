@@ -10,7 +10,7 @@ class Toolkit:
     def __init__(self, filename):
         self.filename = filename
 
-#------------------- CRUD TOOLS -------------------#
+#---------- OBJECT MANIPULATION TOOLS ----------#
 
     def read_object(self, id_regex):
         '''
@@ -221,7 +221,7 @@ class Toolkit:
 
         remove(self.filename + '_TMP')
 
-#------------------- EDF TOOLS -------------------#
+#------------------ EDF TOOLS ------------------#
 
     def get_edf_vars(self):
         '''
@@ -262,10 +262,15 @@ class Toolkit:
         df.columns = self.get_edf_vars()
         return df
 
-    def plot_edf(self, datafile):
-        raise NotImplemented
+    def plot_edf(self, datafile, y_var):
+        '''
+        Plot an EDF variable value along time.
+        '''
+        import matplotlib.pyplot as plt
+        self.as_dataframe(datafile).plot(x='TIME', y=y_var)
+        plt.show()
 
-#------------------- AUX TOOLS -------------------#
+#------------------ AUX TOOLS ------------------#
 
     def remove_comments(self, new_file=None):
         '''
@@ -288,3 +293,9 @@ class Toolkit:
         Searches for an input object (CV, FL...) by its ID in a list of input elements.
         '''
         return [x for x in obj_list if f'{id}00' in x.records.keys()][0]
+
+    def get_duplicated(self, obj_list):
+        '''
+        Searches for duplicated objects (CV, FL...) from a list of objects. 
+        '''
+        return list(set([x for x in obj_list if obj_list.count(x) > 1]))
