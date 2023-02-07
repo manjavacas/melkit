@@ -271,6 +271,29 @@ class Toolkit:
         plt.show()
 
 #------------------ AUX TOOLS ------------------#
+    def get_used_ids(self, obj_list):
+        '''
+        Returns a sorted list of used IDs from a list of objects.
+        '''
+        used_ids = []
+        for obj in obj_list:
+            first_record = list(obj.records.keys())[0]
+            if first_record.endswith('00'):
+                used_ids.append(first_record[2:5])
+        used_ids.sort()
+        return used_ids
+
+    def get_available_ids(self, obj_list):
+        '''
+        Returns a sorted list of available IDs from a list of objects.
+        '''
+        used_ids = self.get_used_ids(obj_list)
+        available_ids = []
+        for i in range(1, 1000):
+            id = f'{i:03}'
+            if id not in used_ids:
+                available_ids.append(id)
+        return available_ids
 
     def remove_comments(self, new_file=None):
         '''
