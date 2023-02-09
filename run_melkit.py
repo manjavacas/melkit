@@ -8,7 +8,8 @@ def run(filename):
 
     toolkit = Toolkit(filename)
     
-    # ...
+    cvs = toolkit.read_cvs()
+    fls = toolkit.read_fls()
 
 
 if __name__ == '__main__':

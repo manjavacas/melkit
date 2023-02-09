@@ -24,6 +24,17 @@ class CV(Object):
 
 
 class FL(Object):
+
+    def get_from(self):
+        for key in list(self.records.keys()):
+            if key.endswith('00'):
+                return self.records[key]['KCVFM']
+
+    def get_to(self):
+        for key in list(self.records.keys()):
+            if key.endswith('00'):
+                return self.records[key]['KCVTO']
+
     def __str__(self):
         fl_str = []
         for record_id, attributes in self.records.items():

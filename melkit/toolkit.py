@@ -270,7 +270,33 @@ class Toolkit:
         self.as_dataframe(datafile).plot(x='TIME', y=y_var)
         plt.show()
 
+#------------------ GRAPH TOOLS ------------------#
+
+    def get_fl_connections(self, cv_id, fl_list):
+        '''
+        Get those FLs connected to a given CV
+        '''
+        fl_connected = []
+        for fl in fl_list:
+            if cv_id[2:] in [fl.get_from(), fl.get_to()]:
+                fl_connected.append(fl)
+        return fl_connected
+
+    def get_connected_cvs(self, cv_id, fl_list):
+        '''
+        Get those CVs connected to a given CV
+        '''
+        fl_connected = self.get_fl_connections(cv_id, fl_list)
+        cv_connected = []
+        for fl in fl_connected:
+            if cv_id[2:] == fl.get_from():
+                cv_connected.append(fl.get_to())
+            elif cv_id[2:] == fl.get_to():
+                cv_connected.append(fl.get_from())
+        return cv_connected
+
 #------------------ AUX TOOLS ------------------#
+
     def get_used_ids(self, obj_list):
         '''
         Returns a sorted list of used IDs from a list of objects.
