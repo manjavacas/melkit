@@ -2,7 +2,7 @@
 
 # MELKIT 🧰
 
-A toolkit designed to facilitate the handling of MELCOR/MELGEN files.
+A toolkit designed to facilitate the handling of MELCOR/MELGEN `1.8.6` files.
 
 ## ⚙️ Utilities
 
@@ -20,7 +20,7 @@ A toolkit designed to facilitate the handling of MELCOR/MELGEN files.
 
 You simply need to instantiate a `Toolkit` with the name of the MELGEN file to manipulate and call those functions. For example:
 
-```
+```python
 from melkit.toolkit import Toolkit
 
 toolkit = Toolkit(filename)
