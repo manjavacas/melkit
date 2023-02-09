@@ -270,7 +270,7 @@ class Toolkit:
         self.as_dataframe(datafile).plot(x='TIME', y=y_var)
         plt.show()
 
-#------------------ GRAPH TOOLS ------------------#
+#------------------ CONNECTION TOOLS ------------------#
 
     def get_fl_connections(self, cv_id, fl_list):
         '''

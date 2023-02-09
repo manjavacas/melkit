@@ -1,6 +1,8 @@
-# MELKIT: _the MELCOR toolkit_ 🧰
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-A set of tools designed to facilitate the handling of MELCOR/MELGEN files.
+# MELKIT 🧰
+
+A toolkit designed to facilitate the handling of MELCOR/MELGEN files.
 
 ## ⚙️ Utilities
 
@@ -12,14 +14,19 @@ A set of tools designed to facilitate the handling of MELCOR/MELGEN files.
 - Remove all comments from an input file.
 - Search for objects by their ID.
 - Search for duplicate objects in a given list.
+- Get adjacent `CVs` and `FL` connections for a given `CV`.
 
 ## 💻 How to use
 
 You simply need to instantiate a `Toolkit` with the name of the MELGEN file to manipulate and call those functions. For example:
 
 ```
+from melkit.toolkit import Toolkit
+
 toolkit = Toolkit(filename)
+
 cvs = toolkit.read_cvs()
+fls = toolkit.read_fls()
 ```
 
 ## 👐 Contributing
