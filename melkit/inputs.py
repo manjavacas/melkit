@@ -10,6 +10,11 @@ class Object():
 
 
 class CV(Object):
+    def get_name(self):
+        for key in list(self.records.keys()):
+            if key.endswith('00'):
+                return self.records[key]['NAME']
+
     def __str__(self):
         cv_str = []
         for record_id, attributes in self.records.items():
@@ -24,6 +29,10 @@ class CV(Object):
 
 
 class FL(Object):
+    def get_name(self):
+        for key in list(self.records.keys()):
+            if key.endswith('00'):
+                return self.records[key]['FLNAME']
 
     def get_from(self):
         for key in list(self.records.keys()):

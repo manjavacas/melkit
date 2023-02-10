@@ -10,9 +10,12 @@ class Toolkit:
     def __init__(self, filename):
         self.filename = filename
 
+        self._cv_list = self._read_cvs()
+        self._fl_list = self._read_fls()
+
 #---------- OBJECT MANIPULATION TOOLS ----------#
 
-    def read_object(self, id_regex):
+    def _read_object(self, id_regex):
         '''
         Looks for objects in the input file according to given ID regex
         '''
@@ -27,17 +30,17 @@ class Toolkit:
                         objs.append(self.get_fl(id.group()[:-2]))
         return objs
 
-    def read_cvs(self):
+    def _read_cvs(self):
         '''
         Looks for CVs in the input file and returns them as a list of CV objects.
         '''
-        return self.read_object(r'\bCV\d{3}00\b')
+        return self._read_object(r'\bCV\d{3}00\b')
 
-    def read_fls(self):
+    def _read_fls(self):
         '''
         Looks for FLs in the input file and returns them as a list of FL objects.
         '''
-        return self.read_object(r'\bFL\d{3}00\b')
+        return self._read_object(r'\bFL\d{3}00\b')
 
     def get_cv(self, cv_id):
         '''
@@ -168,6 +171,18 @@ class Toolkit:
 
         return FL(fl_data)
 
+    def get_cv_list(self):
+        '''
+        Return the list of CVs in parsed file.
+        '''
+        return self._cv_list
+
+    def get_fl_list(self):
+        '''
+        Return the list of CVs in parsed file.
+        '''
+        return self._fl_list
+
     def remove_object(self, obj_id, new_file=None):
         '''
         Deletes an object from the input file.
@@ -272,28 +287,47 @@ class Toolkit:
 
 #------------------ CONNECTION TOOLS ------------------#
 
-    def get_fl_connections(self, cv_id, fl_list):
+    def get_fl_connections(self, cv_id):
         '''
         Get those FLs connected to a given CV
         '''
         fl_connected = []
-        for fl in fl_list:
+        for fl in self._fl_list:
             if cv_id[2:] in [fl.get_from(), fl.get_to()]:
                 fl_connected.append(fl)
         return fl_connected
 
-    def get_connected_cvs(self, cv_id, fl_list):
+    def get_connected_cvs(self, cv_id):
         '''
         Get those CVs connected to a given CV
         '''
-        fl_connected = self.get_fl_connections(cv_id, fl_list)
+        fl_connected = self.get_fl_connections(cv_id)
         cv_connected = []
         for fl in fl_connected:
             if cv_id[2:] == fl.get_from():
-                cv_connected.append(fl.get_to())
+                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_to()))
             elif cv_id[2:] == fl.get_to():
-                cv_connected.append(fl.get_from())
+                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_from()))
         return cv_connected
+
+    def create_submodel(self, cv_id):
+        '''
+        Creates a submodel related to a given CV. Those neighbour CVs are made time-independent.
+        '''
+        sub_cvs, sub_fls = [], []
+
+        sub_fls = self.get_fl_connections(cv_id)
+        sub_cvs = self.get_connected_cvs(cv_id)
+
+        # TO-DO
+
+        for cv in sub_cvs:
+            # make cv time independent
+            pass
+
+        ## Add sub_cvs, sub_fls and cv (cv_id) to file (previously, remove other FLs and CVs)
+
+        return sub_cvs, sub_fls
 
 #------------------ AUX TOOLS ------------------#
 

@@ -7,9 +7,12 @@ OUTPUT_FILE = 'OUTPUTS/VARIABLES.DAT'
 def run(filename):
 
     toolkit = Toolkit(filename)
+
+    toolkit.create_submodel('CV016')
+
     
-    cvs = toolkit.read_cvs()
-    fls = toolkit.read_fls()
+
+
 
 
 if __name__ == '__main__':
