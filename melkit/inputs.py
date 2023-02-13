@@ -23,6 +23,10 @@ class Object():
             if field_name in self.records[record]:
                 self.records[record][field_name] = new_val
 
+    def __eq__(self, other):
+        return self.get_id() == other.get_id()
+
+
 class CV(Object):
     def __str__(self):
         cv_str = []

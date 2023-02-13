@@ -183,73 +183,112 @@ class Toolkit:
         '''
         return self._fl_list
 
-    def remove_object(self, obj_id, new_file=None):
+    def remove_object(self, obj_id, src_file=None, new_file=None):
         '''
         Deletes an object from the input file.
         '''
 
-        if self._filename.endswith('_NEW'):
-            sample_filename = self._filename
-        else:
-            sample_filename = self._filename + '_NEW'
+        src_file = src_file or self._filename
+        new_file = new_file or self._filename + '_NEW'
 
-        new_file = new_file or sample_filename    
-
-        with open(self._filename, 'r') as f1, open(new_file, 'w') as f2:
+        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
                 if not line.startswith(obj_id):
                     f2.write(line)
 
-    def write_object(self, obj, new_file=None):
+    def remove_objects(self, obj_ids, src_file=None, new_file=None):
+        '''
+        Deletes a list of objects from the input file.
+        '''
+
+        src_file = src_file or self._filename
+        new_file = new_file or self._filename + '_NEW'
+
+        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
+            for line in f1:
+                if line[:5] not in obj_ids:
+                    f2.write(line)
+
+    def write_object(self, obj, src_file=None, new_file=None):
         '''
         Writes a new object in the input file.
         '''
 
-        if self._filename.endswith('_NEW'):
-            sample_filename = self._filename
-        else:
-            sample_filename = self._filename + '_NEW'
+        src_file = src_file or self._filename
+        new_file = new_file or self._filename + '_NEW'
 
-        new_file = new_file or sample_filename
-
-        obj_type = list(obj.records.keys())[0][:2]
-
-        with open(self._filename, 'r') as f1, open(new_file, 'w') as f2:
+        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             written = False
             for line in f1:
-                if line.startswith(obj_type) and not written:
-                    f2.write(str(obj) + '\n' + line)
+                if line.startswith('.') and not written:
+                    f2.write('*\n' + str(obj) + '*\n' + line)
                     written = True
                 else:
                     f2.write(line)
 
-    def update_object(self, obj, new_file=None):
+    def write_objects(self, obj_list, src_file=None, new_file=None):
+        '''
+        Writes a new object in the input file.
+        '''
+
+        src_file = src_file or self._filename
+        new_file = new_file or self._filename + '_NEW'
+
+        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
+            written = False
+            for line in f1:
+                if line.startswith('.') and not written:
+                    for obj in obj_list:
+                        f2.write('*\n' + str(obj) + '*\n')
+                    f2.write(line)
+                    written = True
+                else:
+                    f2.write(line)
+
+    def update_object(self, obj, src_file=None, new_file=None):
+        '''
+        Updates object input information.
+        '''
+
+        src_file = src_file or self._filename
+        tmp_file = self._filename + '_TMP'
+        new_file = new_file or self._filename + '_NEW'
+
+        obj_id = obj.get_id()
+
+        self.remove_object(obj_id, new_file=tmp_file)
+        self.write_object(obj, src_file=tmp_file, new_file=new_file)
+
+        remove(self._filename + '_TMP')
+
+    def update_objects(self, obj_list, src_file=None, new_file=None):
         '''
         Updates objects input information.
         '''
 
-        obj_id = list(obj.records.keys())[0][:5]
-
-        if self._filename.endswith('_NEW'):
-            sample_filename = self._filename
-        else:
-            sample_filename = self._filename + '_NEW'
-
-        new_file = new_file or sample_filename
+        src_file = src_file or self._filename
         tmp_file = self._filename + '_TMP'
+        new_file = new_file or self._filename + '_NEW'
 
-        self.remove_object(obj_id, new_file=tmp_file)
+        obj_ids = [obj.get_id() for obj in obj_list]
 
-        with open(tmp_file, 'r') as f1, open(new_file, 'w') as f2:
-            written = False
-            for line in f1:
-                if line.startswith('.') and not written:
-                    f2.write(str(obj) + '*\n' + line)
-                    written = True
-                else:
-                    f2.write(line)
+        self.remove_objects(obj_ids, new_file=tmp_file)
+        self.write_objects(obj_list, src_file=tmp_file, new_file=new_file)
 
         remove(self._filename + '_TMP')
+
+    def clear_objects(self, src_file=None, new_file=None):
+        '''
+        Removes every CV or FL in the input file.
+        '''
+
+        src_file = src_file or self._filename
+        new_file = new_file or self._filename + '_NEW'
+
+        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
+            for line in f1:
+                if line[:2] not in ['CV', 'FL', 'CF', 'TF']:
+                    f2.write(line)
 
 #-------------------------------- EDF TOOLS -------------------------------#
 
@@ -320,32 +359,33 @@ class Toolkit:
         cv_connected = []
         for fl in fl_connected:
             if cv_id[2:] == fl.get_field('KCVFM'):
-                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_field('KCVTO')))
+                cv_connected.append(self.id_search(
+                    self._cv_list, 'CV' + fl.get_field('KCVTO')))
             elif cv_id[2:] == fl.get_field('KCVTO'):
-                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_field('KCVFM')))
+                cv_connected.append(self.id_search(
+                    self._cv_list, 'CV' + fl.get_field('KCVFM')))
         return cv_connected
 
     def create_submodel(self, cv_id, new_file=None):
         '''
         Creates a submodel related to a given CV. Those neighbour CVs are made time-independent.
         '''
-        sub_cvs, sub_fls = [], []
 
+        new_file = new_file or self._filename + '_SUB'
+        tmp_file = self._filename + '_TMP'
+
+        sub_cvs = self.get_connected_cvs(cv_id) + [self.get_cv(cv_id)]
         sub_fls = self.get_fl_connections(cv_id)
-        sub_cvs = self.get_connected_cvs(cv_id)
 
         # Make TIME-INDEPENDENT
         for cv in sub_cvs:
             cv.update_field('ICVACT', -1)
 
-        ## TO-DO: Add sub_cvs, sub_fls and cv (cv_id) to file (previously, remove other FLs and CVs)
-        original_filename = self._filename
-        for cv in self._cv_list:
-            print('deleted: ', cv.get_id())
-            self.remove_object(cv.get_id())
-            self._filename = original_filename + '_NEW'
+        # Create submodel file
+        self.clear_objects(new_file=tmp_file)
+        self.write_objects(sub_cvs + sub_fls, src_file=tmp_file, new_file=new_file)
 
-        self._filename = original_filename
+        remove(self._filename + '_TMP')
 
         return sub_cvs, sub_fls
 
