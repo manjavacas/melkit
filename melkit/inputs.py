@@ -8,18 +8,27 @@ class Object():
     ):
         self.records = records or {}
 
+    def get_id(self):
+        for record in self.records:
+            if record.endswith('00'):
+                return record[:5]
+
+    def get_field(self, field_name):
+        for record in self.records:
+            if field_name in self.records[record]:
+                return self.records[record][field_name]
+
+    def update_field(self, field_name, new_val):
+        for record in self.records:
+            if field_name in self.records[record]:
+                self.records[record][field_name] = new_val
 
 class CV(Object):
-    def get_name(self):
-        for key in list(self.records.keys()):
-            if key.endswith('00'):
-                return self.records[key]['NAME']
-
     def __str__(self):
         cv_str = []
-        for record_id, attributes in self.records.items():
-            cv_str.append(f'{record_id}\t')
-            for key, value in attributes.items():
+        for record, fields in self.records.items():
+            cv_str.append(f'{record}\t')
+            for key, value in fields.items():
                 if key in CV_KEYS:
                     cv_str.append(f'{key}\t{value}\t')
                 else:
@@ -29,26 +38,11 @@ class CV(Object):
 
 
 class FL(Object):
-    def get_name(self):
-        for key in list(self.records.keys()):
-            if key.endswith('00'):
-                return self.records[key]['FLNAME']
-
-    def get_from(self):
-        for key in list(self.records.keys()):
-            if key.endswith('00'):
-                return self.records[key]['KCVFM']
-
-    def get_to(self):
-        for key in list(self.records.keys()):
-            if key.endswith('00'):
-                return self.records[key]['KCVTO']
-
     def __str__(self):
         fl_str = []
-        for record_id, attributes in self.records.items():
-            fl_str.append(f'{record_id}\t')
-            for value in attributes.values():
+        for record, fields in self.records.items():
+            fl_str.append(f'{record}\t')
+            for value in fields.values():
                 fl_str.append(f'{value}\t')
             fl_str.append('\n')
         return ''.join(fl_str)

@@ -8,12 +8,8 @@ def run(filename):
 
     toolkit = Toolkit(filename)
 
-    toolkit.create_submodel('CV016')
-
-    
-
-
-
+    toolkit.create_submodel('CV001')
 
 if __name__ == '__main__':
-    run(sys.argv[1])
+    # run(sys.argv[1])
+    run('./sample_files/sample1.inp')

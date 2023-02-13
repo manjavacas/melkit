@@ -8,19 +8,19 @@ from .constants import CV_KEYS
 class Toolkit:
 
     def __init__(self, filename):
-        self.filename = filename
+        self._filename = filename
 
         self._cv_list = self._read_cvs()
         self._fl_list = self._read_fls()
 
-#---------- OBJECT MANIPULATION TOOLS ----------#
+#------------------------ OBJECT MANIPULATION TOOLS -----------------------#
 
     def _read_object(self, id_regex):
         '''
         Looks for objects in the input file according to given ID regex
         '''
         ids, objs = [], []
-        with open(self.filename, 'r') as file:
+        with open(self._filename, 'r') as file:
             for line in file:
                 id = search(id_regex, line)
                 if id and id not in ids:
@@ -48,7 +48,7 @@ class Toolkit:
         '''
         cv_data = {}
 
-        with open(self.filename, 'r') as file:
+        with open(self._filename, 'r') as file:
             for line in file:
                 if line.startswith(cv_id):
                     record = line.split()
@@ -96,7 +96,7 @@ class Toolkit:
         '''
         fl_data = {}
 
-        with open(self.filename, 'r') as file:
+        with open(self._filename, 'r') as file:
             for line in file:
                 if line.startswith(fl_id):
                     record = line.split()
@@ -188,9 +188,14 @@ class Toolkit:
         Deletes an object from the input file.
         '''
 
-        new_file = new_file or self.filename + '_NEW'
+        if self._filename.endswith('_NEW'):
+            sample_filename = self._filename
+        else:
+            sample_filename = self._filename + '_NEW'
 
-        with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
+        new_file = new_file or sample_filename    
+
+        with open(self._filename, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
                 if not line.startswith(obj_id):
                     f2.write(line)
@@ -200,11 +205,16 @@ class Toolkit:
         Writes a new object in the input file.
         '''
 
-        new_file = new_file or self.filename + '_NEW'
+        if self._filename.endswith('_NEW'):
+            sample_filename = self._filename
+        else:
+            sample_filename = self._filename + '_NEW'
+
+        new_file = new_file or sample_filename
 
         obj_type = list(obj.records.keys())[0][:2]
 
-        with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
+        with open(self._filename, 'r') as f1, open(new_file, 'w') as f2:
             written = False
             for line in f1:
                 if line.startswith(obj_type) and not written:
@@ -220,8 +230,13 @@ class Toolkit:
 
         obj_id = list(obj.records.keys())[0][:5]
 
-        tmp_file = self.filename + '_TMP'
-        new_file = new_file or self.filename + '_NEW'
+        if self._filename.endswith('_NEW'):
+            sample_filename = self._filename
+        else:
+            sample_filename = self._filename + '_NEW'
+
+        new_file = new_file or sample_filename
+        tmp_file = self._filename + '_TMP'
 
         self.remove_object(obj_id, new_file=tmp_file)
 
@@ -234,16 +249,16 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-        remove(self.filename + '_TMP')
+        remove(self._filename + '_TMP')
 
-#------------------ EDF TOOLS ------------------#
+#-------------------------------- EDF TOOLS -------------------------------#
 
     def get_edf_vars(self):
         '''
         Returns a list of variable names based on EDF records in file.
         '''
         keys = ['TIME']
-        with open(self.filename, 'r') as file:
+        with open(self._filename, 'r') as file:
             for line in file:
                 if match(r'\bEDF\d{3}[A-Z][A-Z0-9]', line):
                     keys.append(line.split()[1])
@@ -285,7 +300,7 @@ class Toolkit:
         self.as_dataframe(datafile).plot(x='TIME', y=y_var)
         plt.show()
 
-#------------------ CONNECTION TOOLS ------------------#
+#----------------------------- CONNECTION TOOLS ---------------------------#
 
     def get_fl_connections(self, cv_id):
         '''
@@ -293,7 +308,7 @@ class Toolkit:
         '''
         fl_connected = []
         for fl in self._fl_list:
-            if cv_id[2:] in [fl.get_from(), fl.get_to()]:
+            if cv_id[2:] in [fl.get_field('KCVFM'), fl.get_field('KCVTO')]:
                 fl_connected.append(fl)
         return fl_connected
 
@@ -304,13 +319,13 @@ class Toolkit:
         fl_connected = self.get_fl_connections(cv_id)
         cv_connected = []
         for fl in fl_connected:
-            if cv_id[2:] == fl.get_from():
-                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_to()))
-            elif cv_id[2:] == fl.get_to():
-                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_from()))
+            if cv_id[2:] == fl.get_field('KCVFM'):
+                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_field('KCVTO')))
+            elif cv_id[2:] == fl.get_field('KCVTO'):
+                cv_connected.append(self.id_search(self._cv_list, 'CV' + fl.get_field('KCVFM')))
         return cv_connected
 
-    def create_submodel(self, cv_id):
+    def create_submodel(self, cv_id, new_file=None):
         '''
         Creates a submodel related to a given CV. Those neighbour CVs are made time-independent.
         '''
@@ -319,17 +334,22 @@ class Toolkit:
         sub_fls = self.get_fl_connections(cv_id)
         sub_cvs = self.get_connected_cvs(cv_id)
 
-        # TO-DO
-
+        # Make TIME-INDEPENDENT
         for cv in sub_cvs:
-            # make cv time independent
-            pass
+            cv.update_field('ICVACT', -1)
 
-        ## Add sub_cvs, sub_fls and cv (cv_id) to file (previously, remove other FLs and CVs)
+        ## TO-DO: Add sub_cvs, sub_fls and cv (cv_id) to file (previously, remove other FLs and CVs)
+        original_filename = self._filename
+        for cv in self._cv_list:
+            print('deleted: ', cv.get_id())
+            self.remove_object(cv.get_id())
+            self._filename = original_filename + '_NEW'
+
+        self._filename = original_filename
 
         return sub_cvs, sub_fls
 
-#------------------ AUX TOOLS ------------------#
+#------------------------------- AUX TOOLS --------------------------------#
 
     def get_used_ids(self, obj_list):
         '''
@@ -360,9 +380,9 @@ class Toolkit:
         Remove comments from input file.
         '''
 
-        new_file = new_file or self.filename + '_NEW'
+        new_file = new_file or self._filename + '_NEW'
 
-        with open(self.filename, 'r') as f1, open(new_file, 'w') as f2:
+        with open(self._filename, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
                 if line.startswith('*') and '*EOR*' not in line:
                     f2.write('')
