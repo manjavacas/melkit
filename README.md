@@ -15,6 +15,7 @@ A toolkit designed to facilitate the handling of MELCOR/MELGEN `1.8.6` files.
 - Search for objects by their ID.
 - Search for duplicate objects in a given list.
 - Get adjacent `CVs` and `FL` connections for a given `CV`.
+- Creates a submodel from a given `CV`.
 
 ## 💻 How to use
 
