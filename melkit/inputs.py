@@ -8,17 +8,17 @@ class Object():
     ):
         self.records = records or {}
 
-    def get_id(self):
+    def get_id(self) -> str:
         for record in self.records:
             if record.endswith('00'):
                 return record[:5]
 
-    def get_field(self, field_name):
+    def get_field(self, field_name: str) -> str:
         for record in self.records:
             if field_name in self.records[record]:
                 return self.records[record][field_name]
 
-    def update_field(self, field_name, new_val):
+    def update_field(self, field_name: str, new_val: str) -> None:
         for record in self.records:
             if field_name in self.records[record]:
                 self.records[record][field_name] = new_val

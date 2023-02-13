@@ -8,7 +8,7 @@ OUTPUT_FILE = 'OUTPUTS/VARIABLES.DAT'
 def run(filename):
 
     toolkit = Toolkit(filename)
-
+    cvs = toolkit.get_cv_list()
 
 if __name__ == '__main__':
     run(sys.argv[1])

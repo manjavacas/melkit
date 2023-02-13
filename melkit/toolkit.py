@@ -1,13 +1,18 @@
+from pandas import DataFrame, read_csv
+
 from os import remove
 from re import search, match
+
+from typing import List, Union
+
 from .exceptions import ParseException
-from .inputs import CV, FL
+from .inputs import Object, CV, FL
 from .constants import CV_KEYS
 
 
 class Toolkit:
 
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         self._filename = filename
 
         self._cv_list = self._read_cvs()
@@ -15,9 +20,9 @@ class Toolkit:
 
 #------------------------ OBJECT MANIPULATION TOOLS -----------------------#
 
-    def _read_object(self, id_regex):
+    def _read_object(self, id_regex: str) -> List[Object]:
         '''
-        Looks for objects in the input file according to given ID regex
+        Looks for objects in the input file according to a given ID regex
         '''
         ids, objs = [], []
         with open(self._filename, 'r') as file:
@@ -30,19 +35,19 @@ class Toolkit:
                         objs.append(self.get_fl(id.group()[:-2]))
         return objs
 
-    def _read_cvs(self):
+    def _read_cvs(self) -> List[CV]:
         '''
         Looks for CVs in the input file and returns them as a list of CV objects.
         '''
         return self._read_object(r'\bCV\d{3}00\b')
 
-    def _read_fls(self):
+    def _read_fls(self) -> List[FL]:
         '''
         Looks for FLs in the input file and returns them as a list of FL objects.
         '''
         return self._read_object(r'\bFL\d{3}00\b')
 
-    def get_cv(self, cv_id):
+    def get_cv(self, cv_id: str) -> CV:
         '''
         Searches for a CV in the input file and returns it as a CV object.
         '''
@@ -90,7 +95,7 @@ class Toolkit:
 
         return CV(cv_data)
 
-    def get_fl(self, fl_id):
+    def get_fl(self, fl_id: str) -> FL:
         '''
         Searches for a FL in the input file and returns it as a FL object.
         '''
@@ -171,19 +176,19 @@ class Toolkit:
 
         return FL(fl_data)
 
-    def get_cv_list(self):
+    def get_cv_list(self) -> List[CV]:
         '''
         Return the list of CVs in parsed file.
         '''
         return self._cv_list
 
-    def get_fl_list(self):
+    def get_fl_list(self) -> List[FL]:
         '''
         Return the list of CVs in parsed file.
         '''
         return self._fl_list
 
-    def remove_object(self, obj_id, src_file=None, new_file=None):
+    def remove_object(self, obj_id: str, src_file: str = None, new_file: str = None) -> None:
         '''
         Deletes an object from the input file.
         '''
@@ -196,7 +201,7 @@ class Toolkit:
                 if not line.startswith(obj_id):
                     f2.write(line)
 
-    def remove_objects(self, obj_ids, src_file=None, new_file=None):
+    def remove_objects(self, obj_ids: List[str], src_file: str = None, new_file: str = None) -> None:
         '''
         Deletes a list of objects from the input file.
         '''
@@ -209,7 +214,7 @@ class Toolkit:
                 if line[:5] not in obj_ids:
                     f2.write(line)
 
-    def write_object(self, obj, src_file=None, new_file=None):
+    def write_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
         '''
         Writes a new object in the input file.
         '''
@@ -226,7 +231,7 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def write_objects(self, obj_list, src_file=None, new_file=None):
+    def write_objects(self, obj_list: List[Object], src_file: str = None, new_file: str = None) -> None:
         '''
         Writes a new object in the input file.
         '''
@@ -245,7 +250,7 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def update_object(self, obj, src_file=None, new_file=None):
+    def update_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
         '''
         Updates object input information.
         '''
@@ -261,7 +266,7 @@ class Toolkit:
 
         remove(self._filename + '_TMP')
 
-    def update_objects(self, obj_list, src_file=None, new_file=None):
+    def update_objects(self, obj_list: Object, src_file: str = None, new_file: str = None) -> None:
         '''
         Updates objects input information.
         '''
@@ -277,7 +282,7 @@ class Toolkit:
 
         remove(self._filename + '_TMP')
 
-    def clear_objects(self, src_file=None, new_file=None):
+    def clear_objects(self, src_file: str = None, new_file: str = None) -> None:
         '''
         Removes every CV or FL in the input file.
         '''
@@ -292,7 +297,7 @@ class Toolkit:
 
 #-------------------------------- EDF TOOLS -------------------------------#
 
-    def get_edf_vars(self):
+    def get_edf_vars(self) -> List[str]:
         '''
         Returns a list of variable names based on EDF records in file.
         '''
@@ -303,7 +308,7 @@ class Toolkit:
                     keys.append(line.split()[1])
         return keys
 
-    def get_last_values(self, datafile):
+    def get_last_values(self, datafile: str) -> List[float]:
         '''
         Returns the last values of an EDF output file.
         '''
@@ -313,7 +318,7 @@ class Toolkit:
             last_line = line
         return last_line.split()
 
-    def get_last_values_dict(self, datafile):
+    def get_last_values_dict(self, datafile: str) -> List[float]:
         '''
         Returns the last values of an EDF output file with the corresponding variable names.
         '''
@@ -322,16 +327,15 @@ class Toolkit:
 
         return dict(zip(keys, values))
 
-    def as_dataframe(self, datafile):
+    def as_dataframe(self, datafile: str) -> DataFrame:
         '''
         Converts an output EDF file to a Pandas dataframe.
         '''
-        import pandas as pd
-        df = pd.read_csv(datafile, sep='\s+', header=None)
+        df = read_csv(datafile, sep='\s+', header=None)
         df.columns = self.get_edf_vars()
         return df
 
-    def plot_edf(self, datafile, y_var):
+    def plot_edf(self, datafile: str, y_var: str) -> None:
         '''
         Plot an EDF variable value along time.
         '''
@@ -341,7 +345,7 @@ class Toolkit:
 
 #----------------------------- CONNECTION TOOLS ---------------------------#
 
-    def get_fl_connections(self, cv_id):
+    def get_fl_connections(self, cv_id: str) -> List[FL]:
         '''
         Get those FLs connected to a given CV
         '''
@@ -351,7 +355,7 @@ class Toolkit:
                 fl_connected.append(fl)
         return fl_connected
 
-    def get_connected_cvs(self, cv_id):
+    def get_connected_cvs(self, cv_id: str) -> List[CV]:
         '''
         Get those CVs connected to a given CV
         '''
@@ -366,7 +370,7 @@ class Toolkit:
                     self._cv_list, 'CV' + fl.get_field('KCVFM')))
         return cv_connected
 
-    def create_submodel(self, cv_id, new_file=None):
+    def create_submodel(self, cv_id: str, new_file: str = None) -> Union[List[CV], List[FL]]:
         '''
         Creates a submodel related to a given CV. Those neighbour CVs are made time-independent.
         '''
@@ -383,7 +387,8 @@ class Toolkit:
 
         # Create submodel file
         self.clear_objects(new_file=tmp_file)
-        self.write_objects(sub_cvs + sub_fls, src_file=tmp_file, new_file=new_file)
+        self.write_objects(sub_cvs + sub_fls,
+                           src_file=tmp_file, new_file=new_file)
 
         remove(self._filename + '_TMP')
 
@@ -391,7 +396,7 @@ class Toolkit:
 
 #------------------------------- AUX TOOLS --------------------------------#
 
-    def get_used_ids(self, obj_list):
+    def get_used_ids(self, obj_list: List[Object]) -> List[str]:
         '''
         Returns a sorted list of used IDs from a list of objects.
         '''
@@ -399,11 +404,11 @@ class Toolkit:
         for obj in obj_list:
             first_record = list(obj.records.keys())[0]
             if first_record.endswith('00'):
-                used_ids.append(first_record[2:5])
+                used_ids.append(first_record[:5])
         used_ids.sort()
         return used_ids
 
-    def get_available_ids(self, obj_list):
+    def get_available_ids(self, obj_list: List[Object]) -> List[str]:
         '''
         Returns a sorted list of available IDs from a list of objects.
         '''
@@ -415,7 +420,7 @@ class Toolkit:
                 available_ids.append(id)
         return available_ids
 
-    def remove_comments(self, new_file=None):
+    def remove_comments(self, new_file: str = None) -> None:
         '''
         Remove comments from input file.
         '''
@@ -431,13 +436,13 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def id_search(self, obj_list, id):
+    def id_search(self, obj_list: List[Object], id: str) -> Object:
         '''
         Searches for an input object (CV, FL...) by its ID in a list of input elements.
         '''
         return [x for x in obj_list if f'{id}00' in x.records.keys()][0]
 
-    def get_duplicated(self, obj_list):
+    def get_duplicated(self, obj_list: List[Object]) -> List[Object]:
         '''
         Searches for duplicated objects (CV, FL...) from a list of objects. 
         '''
