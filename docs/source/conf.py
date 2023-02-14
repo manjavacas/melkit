@@ -9,7 +9,6 @@
 project = 'melkit'
 copyright = '2023, Antonio Manjavacas'
 author = 'Antonio Manjavacas'
-release = 'y'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
