@@ -3,8 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to melkit's documentation!
+MELKIT
 ==================================
+
+MELKIT is a simple MELCOR/MELGEN file manipulation toolkit.
 
 .. toctree::
    :maxdepth: 2
