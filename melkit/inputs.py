@@ -1,7 +1,14 @@
+'''
+MELGEN input objects.
+'''
+
 from .constants import CV_KEYS
 
 
 class Object():
+    '''
+    Generic input object class.
+    '''
     def __init__(
         self,
         records=None
@@ -28,6 +35,9 @@ class Object():
 
 
 class CV(Object):
+    '''
+    Control Volume class (CVH package).
+    '''
     def __str__(self):
         cv_str = []
         for record, fields in self.records.items():
@@ -42,6 +52,9 @@ class CV(Object):
 
 
 class FL(Object):
+    '''
+    Flow Path class (FL package).
+    '''
     def __str__(self):
         fl_str = []
         for record, fields in self.records.items():

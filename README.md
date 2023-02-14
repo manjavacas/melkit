@@ -1,4 +1,4 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Release](https://badgen.net/github/release/manjavacas/melkit)]() [![License](https://badgen.net/github/license/manjavacas/melkit)]() [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
 
 # MELKIT 🧰
 
@@ -15,7 +15,7 @@ A toolkit designed to facilitate the handling of MELCOR/MELGEN `1.8.6` files.
 - Search for objects by their ID.
 - Search for duplicate objects in a given list.
 - Get adjacent `CVs` and `FL` connections for a given `CV`.
-- Creates a submodel from a given `CV`.
+- Create submodels from a given `CV`.
 
 ## 💻 How to use
 
