@@ -23,6 +23,3 @@ toolkit.get_available_ids(fls)
 # Get connections for a given CV
 toolkit.get_fl_connections(cv)
 toolkit.get_connected_cvs(cv)
-
-
-

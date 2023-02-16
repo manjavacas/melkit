@@ -4,6 +4,7 @@ MELKIT
 
 .. toctree::
    :caption: Getting started
+   :maxdepth: 1
 
    pages/about.rst
    pages/examples.rst
