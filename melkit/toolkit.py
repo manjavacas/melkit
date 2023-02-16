@@ -1,3 +1,7 @@
+'''
+MELGEN/MELCOR file manipulation tools.
+'''
+
 from pandas import DataFrame, read_csv
 
 from os import remove
@@ -11,6 +15,9 @@ from .constants import CV_KEYS
 
 
 class Toolkit:
+    '''
+    Multi-purpose file manipulator.
+    '''
 
     def __init__(self, filename: str):
         self._filename = filename
