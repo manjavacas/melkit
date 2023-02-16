@@ -8,10 +8,10 @@ INPUT_FILE = './input_file.inp'
 
 toolkit = Toolkit(INPUT_FILE)
 
-print('===== CONTROL VOLUMES =====')
+# Read and show CVs file
 for cv in toolkit.get_cv_list():
     print(cv)
 
-print('===== FLOW PATHS =====')
+# Read and show FLs in file
 for fl in toolkit.get_fl_list():
     print(fl)

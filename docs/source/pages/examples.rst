@@ -5,25 +5,22 @@ Examples
 
 In this section, some basic usage examples of MELKIT are shown.
 
-Reading objects
----------------
+File reading
+------------
 
 .. literalinclude:: ../code/read.py
 
+Object manipulation
+-------------------
 
-Editing objects
+.. literalinclude:: ../code/edition.py
+
+Data visualization
+------------------
+
+.. literalinclude:: ../code/visualization.py
+
+Auxiliary tools
 ---------------
 
-.. seealso:: TO-DO
-
-
-Query tools
------------
-
-.. seealso:: TO-DO
-
-
-EDF data visualization
-----------------------
-
-.. seealso:: TO-DO
+.. literalinclude:: ../code/aux_tools.py
