@@ -25,7 +25,7 @@ class Toolkit:
         self._cv_list = self._read_cvs()
         self._fl_list = self._read_fls()
 
-#------------------------ OBJECT MANIPULATION TOOLS -----------------------#
+# ------------------------ OBJECT MANIPULATION TOOLS -----------------------#
 
     def _read_object(self, id_regex: str) -> List[Object]:
         '''
@@ -44,13 +44,15 @@ class Toolkit:
 
     def _read_cvs(self) -> List[CV]:
         '''
-        Looks for CVs in the input file and returns them as a list of CV objects.
+        Looks for CVs in the input file and returns them as
+        a list of CV objects.
         '''
         return self._read_object(r'\bCV\d{3}00\b')
 
     def _read_fls(self) -> List[FL]:
         '''
-        Looks for FLs in the input file and returns them as a list of FL objects.
+        Looks for FLs in the input file and returns them
+        as a list of FL objects.
         '''
         return self._read_object(r'\bFL\d{3}00\b')
 
@@ -97,7 +99,8 @@ class Toolkit:
                                 cv_id, f'Unknown record: {record_id}')
                     except:
                         raise ParseException(
-                            cv_id, f'Invalid number of attributes for record {record_id}')
+                            cv_id, "Invalid number of attributes for "
+                                   f"record {record_id}")
                     cv_data[record_id] = record_data
 
         return CV(cv_data)
@@ -116,7 +119,8 @@ class Toolkit:
                     record_data = {}
 
                     termination = record_id[-2:]
-                    # [!] Note that some terminations and fields have been ignored
+                    # [!] Note that some terminations and fields
+                    # have been ignored
                     try:
                         if termination == '00':
                             record_data['FLNAME'] = record[1]
@@ -178,7 +182,8 @@ class Toolkit:
                                 fl_id, f'Unknown record: {record_id}')
                     except:
                         raise ParseException(
-                            fl_id, f'Invalid number of attributes for record {record_id}')
+                            fl_id, "Invalid number of attributes "
+                                   f"for record {record_id}")
                     fl_data[record_id] = record_data
 
         return FL(fl_data)
@@ -195,7 +200,8 @@ class Toolkit:
         '''
         return self._fl_list
 
-    def remove_object(self, obj_id: str, src_file: str = None, new_file: str = None) -> None:
+    def remove_object(self, obj_id: str, src_file: str = None,
+                      new_file: str = None) -> None:
         '''
         Deletes an object from the input file.
         '''
@@ -208,7 +214,8 @@ class Toolkit:
                 if not line.startswith(obj_id):
                     f2.write(line)
 
-    def remove_objects(self, obj_ids: List[str], src_file: str = None, new_file: str = None) -> None:
+    def remove_objects(self, obj_ids: List[str], src_file: str = None,
+                       new_file: str = None) -> None:
         '''
         Deletes a list of objects from the input file.
         '''
@@ -221,7 +228,8 @@ class Toolkit:
                 if line[:5] not in obj_ids:
                     f2.write(line)
 
-    def write_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
+    def write_object(self, obj: Object, src_file: str = None,
+                     new_file: str = None) -> None:
         '''
         Writes a new object in the input file.
         '''
@@ -238,7 +246,8 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def write_objects(self, obj_list: List[Object], src_file: str = None, new_file: str = None) -> None:
+    def write_objects(self, obj_list: List[Object], src_file: str = None,
+                      new_file: str = None) -> None:
         '''
         Writes a new object in the input file.
         '''
@@ -257,7 +266,8 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def update_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
+    def update_object(self, obj: Object, src_file: str = None,
+                      new_file: str = None) -> None:
         '''
         Updates object input information.
         '''
@@ -273,7 +283,8 @@ class Toolkit:
 
         remove(self._filename + '_TMP')
 
-    def update_objects(self, obj_list: Object, src_file: str = None, new_file: str = None) -> None:
+    def update_objects(self, obj_list: Object, src_file: str = None,
+                       new_file: str = None) -> None:
         '''
         Updates objects input information.
         '''
@@ -289,7 +300,8 @@ class Toolkit:
 
         remove(self._filename + '_TMP')
 
-    def clear_objects(self, src_file: str = None, new_file: str = None) -> None:
+    def clear_objects(self, src_file: str = None,
+                      new_file: str = None) -> None:
         '''
         Removes every CV or FL in the input file.
         '''
@@ -302,7 +314,7 @@ class Toolkit:
                 if line[:2] not in ['CV', 'FL', 'CF', 'TF']:
                     f2.write(line)
 
-#-------------------------------- EDF TOOLS -------------------------------#
+# -------------------------------- EDF TOOLS -------------------------------#
 
     def get_edf_vars(self) -> List[str]:
         '''
@@ -327,7 +339,8 @@ class Toolkit:
 
     def get_last_values_dict(self, datafile: str) -> List[float]:
         '''
-        Returns the last values of an EDF output file with the corresponding variable names.
+        Returns the last values of an EDF output file
+        with the corresponding variable names.
         '''
         values = self.get_last_values(datafile)
         keys = ['TIME'] + self.get_edf_vars(datafile)
@@ -350,7 +363,7 @@ class Toolkit:
         self.as_dataframe(datafile).plot(x='TIME', y=y_var)
         plt.show()
 
-#----------------------------- CONNECTION TOOLS ---------------------------#
+# ----------------------------- CONNECTION TOOLS ---------------------------#
 
     def get_fl_connections(self, cv_id: str) -> List[FL]:
         '''
@@ -377,9 +390,11 @@ class Toolkit:
                     self._cv_list, 'CV' + fl.get_field('KCVFM')))
         return cv_connected
 
-    def create_submodel(self, cv_id: str, new_file: str = None) -> Union[List[CV], List[FL]]:
+    def create_submodel(self, cv_id: str,
+                        new_file: str = None) -> Union[List[CV], List[FL]]:
         '''
-        Creates a submodel related to a given CV. Those neighbour CVs are made time-independent.
+        Creates a submodel related to a given CV. Those neighbour CVs
+        are made time-independent.
         '''
 
         new_file = new_file or self._filename + '_SUB'
@@ -401,7 +416,7 @@ class Toolkit:
 
         return sub_cvs, sub_fls
 
-#------------------------------- AUX TOOLS --------------------------------#
+# ------------------------------- AUX TOOLS --------------------------------#
 
     def get_used_ids(self, obj_list: List[Object]) -> List[str]:
         '''
@@ -445,12 +460,13 @@ class Toolkit:
 
     def id_search(self, obj_list: List[Object], id: str) -> Object:
         '''
-        Searches for an input object (CV, FL...) by its ID in a list of input elements.
+        Searches for an input object (CV, FL...) by its ID in
+        a list of input elements.
         '''
         return [x for x in obj_list if f'{id}00' in x.records.keys()][0]
 
     def get_duplicated(self, obj_list: List[Object]) -> List[Object]:
         '''
-        Searches for duplicated objects (CV, FL...) from a list of objects. 
+        Searches for duplicated objects (CV, FL...) from a list of objects.
         '''
         return list(set([x for x in obj_list if obj_list.count(x) > 1]))
