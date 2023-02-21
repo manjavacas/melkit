@@ -144,9 +144,11 @@ def MCRBin(ptf_path: typing.Union[str, os.PathLike], vars_to_search: list):
 class Ptf:
     def __init__(self, path: typing.Union[str, os.PathLike]):
         self.path = path
+        # TODO: ugly temporary solution
+        #       rewrite MCRBin into different functions
         time_range, _, _, variables, title = MCRBin(path, ["TIME"])
         self._time_range = time_range
-        self._title = title
+        self._title = title.strip()
         self._columns = variables
 
     @property
@@ -181,9 +183,15 @@ class Ptf:
             columns=columns,
             data=data,
         )
-        df = df.set_index("time [s]")
         return df
 
 
-def compare_ptf(ptf_lst: list[Ptf], variables: list[str], save: bool = False):
+def compare_ptf(ptf_lst: list[Ptf], variables: list[str]):
     """ Compare data from PTF files by plotting variables """
+    df_list = [ptf.to_DataFrame(variables) for ptf in ptf_lst]
+    titles = [ptf.title for ptf in ptf_lst]
+    for variable in variables:
+        var_list = [df[variable] for df in df_list]
+        var_df = pd.concat(var_list, axis=1)
+        var_df.columns = titles
+        var_df.plot(title=variable)
