@@ -173,10 +173,11 @@ class Ptf:
         return text
 
     def to_DataFrame(self, columns: list):
-        if not set(columns).issubset(set(self.columns)):
-            # TODO: Print which ones
-            raise ValueError("One or more desired columns are not contained "
-                             "the PTF file")
+        desired_cols = set(columns)
+        available_cols = set(self.columns)
+        if not desired_cols.issubset(available_cols):
+            raise KeyError(f"Desired columns {desired_cols - available_cols} "
+                           f"are not available in PTF {self.title}")
         time, data, units, _, _ = MCRBin(self.path, columns)
         df = pd.DataFrame(
             index=time,
