@@ -423,9 +423,19 @@ class Toolkit:
         available_ids = []
         for i in range(1, 1000):
             id = f'{i:03}'
-            if id not in used_ids:
-                available_ids.append(id)
+            if 'FL' + id not in used_ids:
+                available_ids.append('FL' + id)
         return available_ids
+
+    def list_to_csv(self, obj_list: List[Object], title='./sample.csv') -> DataFrame:
+        '''
+        Returns a single-column ID DataFrame from an object list. Also exports it as a CSV file.
+        '''
+        ids = self.get_used_ids(obj_list)
+        df = DataFrame(ids, columns=['IDs'])
+        df.to_csv(title, index=False)
+
+        return df
 
     def remove_comments(self, new_file: str = None) -> None:
         '''
