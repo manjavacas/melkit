@@ -132,9 +132,9 @@ class Toolkit:
                             # record_data['FLHGTT'] = record[5]
                         elif termination == '02':
                             record_data['KFLGFL'] = record[1]
-                            record_data['KACTFL'] = record[2]
-                            record_data['IBUBF'] = record[3]
-                            record_data['IBUBT'] = record[4]
+                            # record_data['KACTFL'] = record[2]
+                            # record_data['IBUBF'] = record[3]
+                            # record_data['IBUBT'] = record[4]
                         elif termination == '03':
                             record_data['FRICFO'] = record[1]
                             record_data['FRICRO'] = record[2]
@@ -427,11 +427,21 @@ class Toolkit:
                 available_ids.append('FL' + id)
         return available_ids
 
-    def list_to_csv(self, obj_list: List[Object], title='./sample.csv') -> DataFrame:
+    def used_to_csv(self, obj_list: List[Object], title='./used.csv') -> DataFrame:
         '''
-        Returns a single-column ID DataFrame from an object list. Also exports it as a CSV file.
+        Returns a single-column used IDs DataFrame from an object list. Also exports it as a CSV file.
         '''
         ids = self.get_used_ids(obj_list)
+        df = DataFrame(ids, columns=['IDs'])
+        df.to_csv(title, index=False)
+
+        return df
+    
+    def available_to_csv(self, obj_list: List[Object], title='./available.csv') -> DataFrame:
+        '''
+        Returns a single-column available IDs DataFrame from an object list. Also exports it as a CSV file.
+        '''
+        ids = self.get_available_ids(obj_list)
         df = DataFrame(ids, columns=['IDs'])
         df.to_csv(title, index=False)
 
