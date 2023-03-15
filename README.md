@@ -15,7 +15,19 @@ A toolkit designed to facilitate the handling of MELCOR/MELGEN `1.8.6` files.
 - Search for objects by their ID.
 - Search for duplicate objects in a given list.
 - Get adjacent `CVs` and `FL` connections for a given `CV`.
-- Create submodels from a given `CV` (beta).
+- Create submodels from a given `CV` (_beta_).
+
+## ➕ Extensions
+
+Includes **MELCOR Language Support** (`mls`): a MELCOR syntax highlighter for Visual Studio Code.
+
+Just copy the [`mls` folder](https://github.com/manjavacas/melkit/tree/main/vscode/mls) in `.vscode/extensions` for an improved MELCOR coding experience. 
+
+You can find the Visual Studio Code installation folder in the following paths:
+
+* **Windows**: `%USERPROFILE%\.vscode\extensions`
+* **macOS**: `~/.vscode/extensions`
+* **Linux**: `~/.vscode/extensions`
 
 ## 💻 How to use
 
