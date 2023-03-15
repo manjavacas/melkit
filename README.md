@@ -19,7 +19,7 @@ A toolkit designed to facilitate the handling of MELCOR/MELGEN `1.8.6` files.
 
 ## ➕ Extensions
 
-Includes **MELCOR Language Support** (`mls`): a MELCOR syntax highlighter for Visual Studio Code.
+Includes **MELCOR Language Support** (`mls`): a MELCOR 1.8.6 syntax highlighter for Visual Studio Code.
 
 Just copy the [`mls` folder](https://github.com/manjavacas/melkit/tree/main/vscode/mls) in `.vscode/extensions` for an improved MELCOR coding experience. 
 
