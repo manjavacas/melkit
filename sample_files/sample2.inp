@@ -18,7 +18,8 @@ NCG555    AR    8
 CF10000   QP  EQUALS  1  0.0  35.64601176           
 CF10010   1.0  0.0  TIME
 CF10100   RJ  MULTIPLY  1  0.3                      
-CF10110   1.0  0.0  CFVALU.100                      
+CF10110   1.0  0.0  CFVALU.100
+*                     
 CF10200   QT  EQUALS  1  1.0                        
 CF10210   1.0  0.0  CFVALU.103
 CF10300   Q-LLC  EQUALS  1  0.0  11747.14318        
@@ -196,18 +197,22 @@ FL200S0   0.001341   7.5    0.038
 FL200T0   2  200           
 CF20000   VEL-ArSS  EQUALS  1  0.0  0.1735                      
 CF20010   1.0  0.0  TIME
+
 FL20100   SGS-FL201   903   904   6.2  6.2
 FL20101   0.43709  10.0   1.0    0.746    0.746              
 FL20102	  3     0    0     0                                
 FL20103   0.0   0.0                                                           
 FL201S0   0.43709   10.0    0.746                               
-FL201T0   2   201                                   
+FL201T0   2   201 
+
 CF20100   VEL-FL201  DIVIDE  2  1.0                             
 CF20110   0.0  1573.524  TIME                                   
 CF20115   1.0  0.0  CFVALU.202
+
 CF20200   NUM-201  ADD  2  1.0
 CF20210   1.0  0.0  CFVALU.102
 CF20215   -1.0  0.0  CFVALU.100
+
 FL20200   SGS-FL202   904   905   6.7    6.7
 FL20201   0.43709  5.0   1.0    0.746    0.746              
 FL20202	  3     0    0     0                                
@@ -330,9 +335,11 @@ CF16415   3600.0  0.0  FL-MFLOW.5.207
 CF16500   ArPu-H2O-ppm DIVIDE 2 1.0E6                               
 CF16510   1.0  0.0  CFVALU.168                                                                                                           
 CF16515   3600.0  0.0  FL-MFLOW.3.207
+
 CF16600  Denom-163 MULTIPLY 2 1.0
 CF16610  1.0  0.0  CFVALU.153
 CF16615  1.0  0.0  CFVALU.300
+
 CF16700  Denom-164 MULTIPLY 2 1.0
 CF16710  1.0  0.0  CFVALU.154
 CF16715  1.0  0.0  CFVALU.300

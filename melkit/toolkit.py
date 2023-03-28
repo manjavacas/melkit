@@ -5,12 +5,13 @@ MELGEN/MELCOR file manipulation tools.
 from pandas import DataFrame, read_csv
 
 from os import remove
-from re import search, match
+from re import search, match, findall
+from json import dumps
 
 from typing import List, Union
 
 from .exceptions import ParseException
-from .inputs import Object, CV, FL
+from .inputs import Object, CV, FL, CF
 from .constants import CV_KEYS
 
 
@@ -24,6 +25,7 @@ class Toolkit:
 
         self._cv_list = self._read_cvs()
         self._fl_list = self._read_fls()
+        self._cf_list = self._read_cfs()
 
 #------------------------ OBJECT MANIPULATION TOOLS -----------------------#
 
@@ -40,6 +42,8 @@ class Toolkit:
                         objs.append(self.get_cv(id.group()[:-2]))
                     elif 'FL' in id_regex:
                         objs.append(self.get_fl(id.group()[:-2]))
+                    elif 'CF' in id_regex:
+                        objs.append(self.get_cf(id.group()[:-2]))
         return objs
 
     def _read_cvs(self) -> List[CV]:
@@ -53,6 +57,12 @@ class Toolkit:
         Looks for FLs in the input file and returns them as a list of FL objects.
         '''
         return self._read_object(r'\bFL\d{3}00\b')
+    
+    def _read_cfs(self) -> List[CF]:
+        '''
+        Looks for CFs in the input file and returns them as a list of CF objects.
+        '''
+        return self._read_object(r'\bCF\d{3,8}00\b')
 
     def get_cv(self, cv_id: str) -> CV:
         '''
@@ -183,6 +193,64 @@ class Toolkit:
 
         return FL(fl_data)
 
+    def get_cf(self, cf_id: str) -> CF:
+        '''
+        Searches for a CF in the input file and returns it as a CF object.
+        '''
+        cf_data = {}
+        
+        arg_c = 0   # arg counter
+
+        with open(self._filename, 'r') as file:
+            for line in file:
+                if line.startswith(cf_id):
+                    record = line.split()
+                    record_id = record[0]
+                    record_data = {}
+
+                    termination = record_id[-2:]
+
+                    try:
+                        if termination == '00':
+                            record_data['CFNAME'] = record[1]
+                            record_data['CFTYPE'] = record[2]
+                            record_data['NCFARG'] = record[3]
+                            record_data['CFSCAL'] = record[4]
+                            record_data['CFADCN'] = record[5] if len(record) > 5 else 0.0
+                        elif termination == '01':
+                            if record[1] in ['.TRUE.', '.FALSE.']:
+                                record_data['LCFVAL'] = record[1]
+                            else:
+                                record_data['CFVALR'] = record[1] 
+                        elif termination == '02':
+                            record_data['ICFLIM'] = record[1]
+                            if int(record[1]) in [1, 2, 3]:
+                                record_data['CFLIML'] = record[2]
+                            if int(record[1]) in [2, 3]:
+                                record_data['CFLIMU'] = record[3]
+                        elif match(r'0[3-4]', termination):
+                            record_data['FIELDS'] = record[1] # Fixable
+                        elif termination == '05':
+                            record_data['CLASS'] = record[1]
+                        elif termination == '06':
+                            record_data['MSGFIL'] = record[1]
+                            if int(record[1]) in [1, 2]:
+                                record_data['SWTMSG'] = record[2]
+                        elif match(r'[10-99]', termination):
+                            record_data['ARSCAL_' + str(arg_c)] = record[1]
+                            record_data['ARADCN_' + str(arg_c)] = record[2]
+                            record_data['CHARG_' + str(arg_c)] = record[3]
+                            arg_c += 1
+                        else:
+                            raise ParseException(
+                                cf_id, f'Unknown record: {record_id}')
+                    except:
+                        raise ParseException(
+                            cf_id, f'Invalid number of attributes for record {record_id}')
+                    cf_data[record_id] = record_data
+
+        return CF(cf_data)
+
     def get_cv_list(self) -> List[CV]:
         '''
         Return the list of CVs in parsed file.
@@ -194,6 +262,12 @@ class Toolkit:
         Return the list of CVs in parsed file.
         '''
         return self._fl_list
+    
+    def get_cf_list(self) -> List[CF]:
+        '''
+        Return the list of CFs in parsed file.
+        '''
+        return self._cf_list
 
     def remove_object(self, obj_id: str, src_file: str = None, new_file: str = None) -> None:
         '''
@@ -376,6 +450,37 @@ class Toolkit:
                 cv_connected.append(self.id_search(
                     self._cv_list, 'CV' + fl.get_field('KCVFM')))
         return cv_connected
+    
+
+    def get_connected_cfs(self, obj_id: str) -> List[CF]:
+        '''
+        Get those CFs directly or indirectly connected to a given Object.
+        - If the Object is an FL, the CF associated with the CFnnnTk record is returned and, recursively, all CFs on which this CF depends are added.
+        - If the object is a CF, that CF and its dependencies are returned.
+        '''
+        cf_connected = []
+
+        # Get a CF specified in the FL Tk record
+        if obj_id.startswith('FL'):
+            fl = self.get_fl(obj_id)
+            for key in fl.records.keys():
+                if match(obj_id + r'T[0-9]$', key) and fl.records[key]['NTFLAG'] == '2':
+                    cf_id = 'CF' + fl.records[key]['NFUN']
+                    cf_connected.append(self.get_cf(cf_id))
+                    # Recursion for interdependent CFs
+                    cf_connected += self.get_connected_cfs(cf_id)
+        # Get those CFs related to a given CF
+        elif obj_id.startswith('CF'):
+            cf = self.get_cf(obj_id)
+            cf_values = findall(r'\bCFVALU\.\d+\b', dumps(cf.records))
+            for value in cf_values: 
+                dot_pos = value.find('.')
+                cf_id = 'CF' + value[dot_pos + 1:]
+                cf_connected.append(self.get_cf(cf_id))
+                cf_connected += self.get_connected_cfs(cf_id)
+
+        return cf_connected
+
 
     def create_submodel(self, cv_id: str, new_file: str = None) -> Union[List[CV], List[FL]]:
         '''
