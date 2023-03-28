@@ -32,6 +32,15 @@ class Object():
 
     def __eq__(self, other):
         return self.get_id() == other.get_id()
+    
+    def __str__(self):
+        obj_str = []
+        for record, fields in self.records.items():
+            obj_str.append(f'{record}\t')
+            for value in fields.values():
+                obj_str.append(f'{value}\t')
+            obj_str.append('\n')
+        return ''.join(obj_str)
 
 
 class CV(Object):
@@ -55,11 +64,8 @@ class FL(Object):
     '''
     Flow Path class (FL package).
     '''
-    def __str__(self):
-        fl_str = []
-        for record, fields in self.records.items():
-            fl_str.append(f'{record}\t')
-            for value in fields.values():
-                fl_str.append(f'{value}\t')
-            fl_str.append('\n')
-        return ''.join(fl_str)
+
+class CF(Object):
+    '''
+    Control Function class (CF package).
+    '''

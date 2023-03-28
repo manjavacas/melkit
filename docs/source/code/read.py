@@ -15,3 +15,7 @@ for cv in toolkit.get_cv_list():
 # Read and show FLs in file
 for fl in toolkit.get_fl_list():
     print(fl)
+
+# Read and show CFs in file
+for cf in toolkit.get_cf_list():
+    print(cf)
