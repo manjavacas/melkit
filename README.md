@@ -19,18 +19,6 @@ A toolkit designed to facilitate the handling of MELCOR/MELGEN `1.8.6` files.
 - Recursively extract inter-dependent `CFs`.
 - Create submodels from a given `CV` (_beta_).
 
-## ➕ Extensions
-
-Includes **MELCOR Language Support** (`mls`): a MELCOR 1.8.6 syntax highlighter for Visual Studio Code.
-
-Just copy the [`mls` folder](https://github.com/manjavacas/melkit/tree/main/vscode/mls) in `.vscode/extensions` for an improved MELCOR coding experience. 
-
-You can find the Visual Studio Code installation folder in the following paths:
-
-* **Windows**: `%USERPROFILE%\.vscode\extensions`
-* **macOS**: `~/.vscode/extensions`
-* **Linux**: `~/.vscode/extensions`
-
 ## 💻 How to use
 
 You simply need to instantiate a `Toolkit` with the name of the MELGEN file to manipulate and call those functions. For example:
@@ -43,6 +31,18 @@ toolkit = Toolkit(filename)
 cvs = toolkit.read_cvs()
 fls = toolkit.read_fls()
 ```
+
+## ➕ Extensions
+
+Includes **MELCOR Language Support** (`mls`): a MELCOR 1.8.6 syntax highlighter for Visual Studio Code.
+
+Just copy the [`mls` folder](https://github.com/manjavacas/melkit/tree/main/vscode/mls) in `.vscode/extensions` for an improved MELCOR coding experience. 
+
+You can find the Visual Studio Code installation folder in the following paths:
+
+* **Windows**: `%USERPROFILE%\.vscode\extensions`
+* **macOS**: `~/.vscode/extensions`
+* **Linux**: `~/.vscode/extensions`
 
 ## 👐 Contributing
 
