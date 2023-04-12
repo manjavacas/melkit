@@ -4,7 +4,7 @@ MELGEN/MELCOR file manipulation tools.
 
 from pandas import DataFrame, read_csv
 
-from os import remove
+from os import remove, rename
 from re import search, match, findall
 from json import dumps
 
@@ -269,25 +269,29 @@ class Toolkit:
         '''
         return self._cf_list
 
-    def remove_object(self, obj_id: str, src_file: str = None, new_file: str = None) -> None:
+    def remove_object(self, obj_id: str, overwrite: bool = False, new_file: str = None) -> None:
         '''
         Deletes an object from the input file.
         '''
 
-        src_file = src_file or self._filename
-        new_file = new_file or self._filename + '_NEW'
+        src_file = self._filename
+        new_file = new_file or src_file + '_NEW'
 
         with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
                 if not line.startswith(obj_id):
                     f2.write(line)
 
-    def remove_objects(self, obj_ids: List[str], src_file: str = None, new_file: str = None) -> None:
+        if overwrite:
+            remove(src_file)
+            rename(new_file, src_file)
+
+    def remove_objects(self, obj_ids: List[str], new_file: str = None) -> None:
         '''
         Deletes a list of objects from the input file.
         '''
 
-        src_file = src_file or self._filename
+        src_file = self._filename
         new_file = new_file or self._filename + '_NEW'
 
         with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
@@ -295,14 +299,14 @@ class Toolkit:
                 if line[:5] not in obj_ids:
                     f2.write(line)
 
-    def write_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
+    def write_object(self, obj: Object, overwrite: bool = False, new_file: str = None) -> None:
         '''
         Writes a new object in the input file.
         '''
 
-        src_file = src_file or self._filename
-        new_file = new_file or self._filename + '_NEW'
-
+        src_file = self._filename
+        new_file = new_file or src_file + '_NEW'
+ 
         with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             written = False
             for line in f1:
@@ -312,12 +316,16 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def write_objects(self, obj_list: List[Object], src_file: str = None, new_file: str = None) -> None:
+        if overwrite:
+            remove(src_file)
+            rename(new_file, src_file)
+
+    def write_objects(self, obj_list: List[Object], new_file: str = None) -> None:
         '''
         Writes a new object in the input file.
         '''
 
-        src_file = src_file or self._filename
+        src_file = self._filename
         new_file = new_file or self._filename + '_NEW'
 
         with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
@@ -331,21 +339,31 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def update_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
+    def update_object(self, obj: Object, overwrite : bool = False, new_file: str = None) -> None:
         '''
         Updates object input information.
         '''
 
-        src_file = src_file or self._filename
-        tmp_file = self._filename + '_TMP'
-        new_file = new_file or self._filename + '_NEW'
+        src_file = self._filename
+        new_file = new_file or src_file + '_NEW'
 
         obj_id = obj.get_id()
 
-        self.remove_object(obj_id, new_file=tmp_file)
-        self.write_object(obj, src_file=tmp_file, new_file=new_file)
-
-        remove(self._filename + '_TMP')
+        if overwrite:
+            self.remove_object(obj_id, overwrite=True)
+            self.write_object(obj, overwrite=True)
+        else:
+            tmp_file = src_file + '_TMP'
+            self.remove_object(obj_id, new_file=tmp_file)
+            with open(tmp_file, 'r') as f1, open(new_file, 'w') as f2:
+                written = False
+                for line in f1:
+                    if line.startswith('.') and not written:
+                        f2.write('*\n' + str(obj) + '*\n' + line)
+                        written = True
+                    else:
+                        f2.write(line)
+            remove(tmp_file)
 
     def update_objects(self, obj_list: Object, src_file: str = None, new_file: str = None) -> None:
         '''
