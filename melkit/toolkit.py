@@ -4,7 +4,7 @@ MELGEN/MELCOR file manipulation tools.
 
 from pandas import DataFrame, read_csv
 
-from os import remove
+from os import remove, rename
 from re import search, match, findall
 from json import dumps
 
@@ -27,7 +27,7 @@ class Toolkit:
         self._fl_list = self._read_fls()
         self._cf_list = self._read_cfs()
 
-#------------------------ OBJECT MANIPULATION TOOLS -----------------------#
+# ------------------------ OBJECT MANIPULATION TOOLS -----------------------#
 
     def _read_object(self, id_regex: str) -> List[Object]:
         '''
@@ -57,7 +57,7 @@ class Toolkit:
         Looks for FLs in the input file and returns them as a list of FL objects.
         '''
         return self._read_object(r'\bFL\d{3}00\b')
-    
+
     def _read_cfs(self) -> List[CF]:
         '''
         Looks for CFs in the input file and returns them as a list of CF objects.
@@ -198,7 +198,7 @@ class Toolkit:
         Searches for a CF in the input file and returns it as a CF object.
         '''
         cf_data = {}
-        
+
         arg_c = 0   # arg counter
 
         with open(self._filename, 'r') as file:
@@ -216,12 +216,13 @@ class Toolkit:
                             record_data['CFTYPE'] = record[2]
                             record_data['NCFARG'] = record[3]
                             record_data['CFSCAL'] = record[4]
-                            record_data['CFADCN'] = record[5] if len(record) > 5 else 0.0
+                            record_data['CFADCN'] = record[5] if len(
+                                record) > 5 else 0.0
                         elif termination == '01':
                             if record[1] in ['.TRUE.', '.FALSE.']:
                                 record_data['LCFVAL'] = record[1]
                             else:
-                                record_data['CFVALR'] = record[1] 
+                                record_data['CFVALR'] = record[1]
                         elif termination == '02':
                             record_data['ICFLIM'] = record[1]
                             if int(record[1]) in [1, 2, 3]:
@@ -229,7 +230,7 @@ class Toolkit:
                             if int(record[1]) in [2, 3]:
                                 record_data['CFLIMU'] = record[3]
                         elif match(r'0[3-4]', termination):
-                            record_data['FIELDS'] = record[1] # Fixable
+                            record_data['FIELDS'] = record[1]  # Fixable
                         elif termination == '05':
                             record_data['CLASS'] = record[1]
                         elif termination == '06':
@@ -262,46 +263,37 @@ class Toolkit:
         Return the list of CVs in parsed file.
         '''
         return self._fl_list
-    
+
     def get_cf_list(self) -> List[CF]:
         '''
         Return the list of CFs in parsed file.
         '''
         return self._cf_list
 
-    def remove_object(self, obj_id: str, src_file: str = None, new_file: str = None) -> None:
+    def remove_object(self, obj_id: str, overwrite: bool = False, new_file: str = None) -> None:
         '''
         Deletes an object from the input file.
         '''
 
-        src_file = src_file or self._filename
-        new_file = new_file or self._filename + '_NEW'
+        src_file = self._filename
+        new_file = new_file or src_file + '_NEW'
 
         with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
                 if not line.startswith(obj_id):
                     f2.write(line)
 
-    def remove_objects(self, obj_ids: List[str], src_file: str = None, new_file: str = None) -> None:
-        '''
-        Deletes a list of objects from the input file.
-        '''
+        if overwrite:
+            remove(src_file)
+            rename(new_file, src_file)
 
-        src_file = src_file or self._filename
-        new_file = new_file or self._filename + '_NEW'
-
-        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
-            for line in f1:
-                if line[:5] not in obj_ids:
-                    f2.write(line)
-
-    def write_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
+    def write_object(self, obj: Object, overwrite: bool = False, new_file: str = None) -> None:
         '''
         Writes a new object in the input file.
         '''
 
-        src_file = src_file or self._filename
-        new_file = new_file or self._filename + '_NEW'
+        src_file = self._filename
+        new_file = new_file or src_file + '_NEW'
 
         with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             written = False
@@ -312,71 +304,37 @@ class Toolkit:
                 else:
                     f2.write(line)
 
-    def write_objects(self, obj_list: List[Object], src_file: str = None, new_file: str = None) -> None:
-        '''
-        Writes a new object in the input file.
-        '''
+        if overwrite:
+            remove(src_file)
+            rename(new_file, src_file)
 
-        src_file = src_file or self._filename
-        new_file = new_file or self._filename + '_NEW'
-
-        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
-            written = False
-            for line in f1:
-                if line.startswith('.') and not written:
-                    for obj in obj_list:
-                        f2.write('*\n' + str(obj) + '*\n')
-                    f2.write(line)
-                    written = True
-                else:
-                    f2.write(line)
-
-    def update_object(self, obj: Object, src_file: str = None, new_file: str = None) -> None:
+    def update_object(self, obj: Object, overwrite: bool = False, new_file: str = None) -> None:
         '''
         Updates object input information.
         '''
 
-        src_file = src_file or self._filename
-        tmp_file = self._filename + '_TMP'
-        new_file = new_file or self._filename + '_NEW'
+        src_file = self._filename
+        new_file = new_file or src_file + '_NEW'
 
         obj_id = obj.get_id()
 
-        self.remove_object(obj_id, new_file=tmp_file)
-        self.write_object(obj, src_file=tmp_file, new_file=new_file)
+        if overwrite:
+            self.remove_object(obj_id, overwrite=True)
+            self.write_object(obj, overwrite=True)
+        else:
+            tmp_file = src_file + '_TMP'
+            self.remove_object(obj_id, new_file=tmp_file)
+            with open(tmp_file, 'r') as f1, open(new_file, 'w') as f2:
+                written = False
+                for line in f1:
+                    if line.startswith('.') and not written:
+                        f2.write('*\n' + str(obj) + '*\n' + line)
+                        written = True
+                    else:
+                        f2.write(line)
+            remove(tmp_file)
 
-        remove(self._filename + '_TMP')
-
-    def update_objects(self, obj_list: Object, src_file: str = None, new_file: str = None) -> None:
-        '''
-        Updates objects input information.
-        '''
-
-        src_file = src_file or self._filename
-        tmp_file = self._filename + '_TMP'
-        new_file = new_file or self._filename + '_NEW'
-
-        obj_ids = [obj.get_id() for obj in obj_list]
-
-        self.remove_objects(obj_ids, new_file=tmp_file)
-        self.write_objects(obj_list, src_file=tmp_file, new_file=new_file)
-
-        remove(self._filename + '_TMP')
-
-    def clear_objects(self, src_file: str = None, new_file: str = None) -> None:
-        '''
-        Removes every CV or FL in the input file.
-        '''
-
-        src_file = src_file or self._filename
-        new_file = new_file or self._filename + '_NEW'
-
-        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
-            for line in f1:
-                if line[:2] not in ['CV', 'FL', 'CF', 'TF']:
-                    f2.write(line)
-
-#-------------------------------- EDF TOOLS -------------------------------#
+# -------------------------------- EDF TOOLS -------------------------------#
 
     def get_edf_vars(self) -> List[str]:
         '''
@@ -424,7 +382,7 @@ class Toolkit:
         self.as_dataframe(datafile).plot(x='TIME', y=y_var)
         plt.show()
 
-#----------------------------- CONNECTION TOOLS ---------------------------#
+# ----------------------------- CONNECTION TOOLS ---------------------------#
 
     def get_fl_connections(self, cv_id: str) -> List[FL]:
         '''
@@ -450,7 +408,6 @@ class Toolkit:
                 cv_connected.append(self.id_search(
                     self._cv_list, 'CV' + fl.get_field('KCVFM')))
         return cv_connected
-    
 
     def get_connected_cfs(self, obj_id: str) -> List[CF]:
         '''
@@ -473,14 +430,13 @@ class Toolkit:
         elif obj_id.startswith('CF'):
             cf = self.get_cf(obj_id)
             cf_values = findall(r'\bCFVALU\.\d+\b', dumps(cf.records))
-            for value in cf_values: 
+            for value in cf_values:
                 dot_pos = value.find('.')
                 cf_id = 'CF' + value[dot_pos + 1:]
                 cf_connected.append(self.get_cf(cf_id))
                 cf_connected += self.get_connected_cfs(cf_id)
 
         return cf_connected
-
 
     def create_submodel(self, cv_id: str, new_file: str = None) -> Union[List[CV], List[FL]]:
         '''
@@ -506,7 +462,7 @@ class Toolkit:
 
         return sub_cvs, sub_fls
 
-#------------------------------- AUX TOOLS --------------------------------#
+# ------------------------------- AUX TOOLS --------------------------------#
 
     def get_used_ids(self, obj_list: List[Object]) -> List[str]:
         '''
@@ -541,7 +497,7 @@ class Toolkit:
         df.to_csv(title, index=False)
 
         return df
-    
+
     def available_to_csv(self, obj_list: List[Object], title='./available.csv') -> DataFrame:
         '''
         Returns a single-column available IDs DataFrame from an object list. Also exports it as a CSV file.
