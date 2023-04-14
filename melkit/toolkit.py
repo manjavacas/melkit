@@ -529,7 +529,6 @@ class Toolkit:
             remove(src_file)
             rename(new_file, src_file)
 
-
     def id_search(self, obj_list: List[Object], id: str) -> Object:
         '''
         Searches for an input object (CV, FL...) by its ID in a list of input elements.
