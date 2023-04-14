@@ -299,7 +299,7 @@ class Toolkit:
             written = False
             for line in f1:
                 if line.startswith('.') and not written:
-                    f2.write(str(obj) + '\n' + line)
+                    f2.write('*\n' + str(obj) + '*\n' + line)
                     written = True
                 else:
                     f2.write(line)
