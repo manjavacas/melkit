@@ -508,14 +508,15 @@ class Toolkit:
 
         return df
 
-    def remove_comments(self, new_file: str = None) -> None:
+    def remove_comments(self, overwrite=False, new_file: str = None) -> None:
         '''
         Remove comments from input file.
         '''
 
+        src_file = self._filename
         new_file = new_file or self._filename + '_NEW'
 
-        with open(self._filename, 'r') as f1, open(new_file, 'w') as f2:
+        with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
                 if line.startswith('*') and '*EOR*' not in line:
                     f2.write('')
@@ -523,6 +524,11 @@ class Toolkit:
                     f2.write(line[:line.find('*')] + '\n')
                 else:
                     f2.write(line)
+
+        if overwrite:
+            remove(src_file)
+            rename(new_file, src_file)
+
 
     def id_search(self, obj_list: List[Object], id: str) -> Object:
         '''
