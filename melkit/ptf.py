@@ -1,3 +1,8 @@
+'''
+Module for handling PTF files
+'''
+
+
 import numpy as np
 import os
 import typing
@@ -104,11 +109,6 @@ def MCRBin(ptf_path: typing.Union[str, os.PathLike], vars_to_search: list):
                 available_vars = ['TIME', 'CPU',
                                   'DT', 'UNKN03'] + available_vars
                 VarUdmFull = ['sec', '', '', ''] + VarUdmFull
-                # print(VarSrch)
-                # print(VarNameFull)
-                # for var in VarNameFull:
-                #     if "COR-MEJEC" in var:
-                #         print(var)
 
                 for var in vars_to_search:
                     VarSrchPos.append(available_vars.index(var.strip()))
@@ -141,13 +141,113 @@ def MCRBin(ptf_path: typing.Union[str, os.PathLike], vars_to_search: list):
     return data[:, 0], data[:, 1:], VarUdmFull[1:], available_vars, probemTitle
 
 
+def inspect_ptf(ptf_path: typing.Union[str, os.PathLike]):
+    HdrList = []
+    BlkLenBef = []
+    BlkLenAft = []
+    DataPos = []
+    cntr = 0
+    Var_dict = {}
+    with open(ptf_path, 'rb') as ptf:
+        while True:
+            BlkLenBefSlave = ptf.read(4)
+            if not BlkLenBefSlave:
+                break
+            BlkLenBef.append(unpack('I', BlkLenBefSlave)[0])
+            if BlkLenBef[cntr] == 4:
+                HdrList.append(str(unpack('4s', ptf.read(4))[0], 'utf-8'))
+            elif HdrList[cntr - 1] == 'TITL':
+                probemTitle = str(
+                    unpack('%d' % BlkLenBef[cntr] + 's',
+                           ptf.read(BlkLenBef[cntr]))[0], 'utf-8')
+                HdrList.append([])
+            elif HdrList[cntr - 1] == 'KEY ':
+                VarName = unpack('2I', ptf.read(8))
+                HdrList.append([])
+            elif HdrList[cntr - 2] == 'KEY ':
+                a = BlkLenBef[-1]/VarName[0]
+                stringa = str(int(a))+"s"
+                VarNam = [str(i, 'utf-8') for i in unpack(
+                    stringa * VarName[0], ptf.read(BlkLenBef[cntr]))]
+                HdrList.append([])
+            elif HdrList[cntr - 3] == 'KEY ':
+                VarPos = unpack(
+                    '%d' % VarName[0] + 'I', ptf.read(BlkLenBef[cntr]))
+                HdrList.append([])
+            elif HdrList[cntr - 4] == 'KEY ':
+                VarUdm = [str(i, 'utf-8') for i in unpack(
+                    '16s' * VarName[0], ptf.read(BlkLenBef[cntr]))]
+                HdrList.append([])
+            elif HdrList[cntr - 5] == 'KEY ':
+                VarNum = unpack(
+                    '%d' % VarName[1] + 'I', ptf.read(BlkLenBef[cntr]))
+                available_vars = []
+                VarUdmFull = []
+                NamCntr = 0
+                VarPos = VarPos + (VarName[1]+1,)
+                VarSrchPos = [0]
+                itm_x_Var = []
+                for k in range(0, len(VarNam)):
+                    itm_x_Var.append(VarPos[k+1]-VarPos[k])
+                if len(itm_x_Var) != len(VarNam):
+                    print("Number of variables different from number "
+                          "of items of offset array")
+                    print(itm_x_Var)
+                    print(len(VarNam))
+                    break
+                Items_Tot = sum(itm_x_Var)
+                if Items_Tot != len(VarNum):
+                    print("Sum of items to be associated with each variable "
+                          "is different from the sum of all items id VarNum")
+                VarNum_Cntr = 0
+                Var_dict = {}
+                for i, Var in enumerate(VarNam):
+                    NumOfItems = itm_x_Var[i]
+                    end = VarNum_Cntr + NumOfItems
+                    Var_dict[Var] = list(VarNum[VarNum_Cntr:end])
+                    VarNum_Cntr = VarNum_Cntr+NumOfItems
+                for key in Var_dict.keys():
+                    for element in Var_dict[key]:
+                        if element == 0:
+                            available_vars.append(str(key).strip())
+                        else:
+                            available_vars.append(key.strip()+'_%d' % element)
+                for i, item in enumerate(itm_x_Var):
+                    for k in range(0, item):
+                        VarUdmFull.append(VarUdm[i].strip())
+                available_vars = ['TIME', 'CPU',
+                                  'DT', 'UNKN03'] + available_vars
+                VarUdmFull = ['sec', '', '', ''] + VarUdmFull
+
+                # TODO: this seems quite useless, i.e. VarSrchPos is just
+                # list(range(len(available_vars)))
+                for var in available_vars:
+                    VarSrchPos.append(available_vars.index(var.strip()))
+                VarUdmFull = [VarUdmFull[i] for i in VarSrchPos]
+                SwapPosVarSrch = sorted(range(len(VarSrchPos)),
+                                        key=lambda k: VarSrchPos[k])
+                SwapPosVarSrch = sorted(range(len(SwapPosVarSrch)),
+                                        key=lambda k: SwapPosVarSrch[k])
+                VarSrchPos.sort()
+                VarSrchPos.append(VarName[1]+4)
+                HdrList.append([])
+            elif HdrList[cntr - 1] == '.TR/':
+                DataPos.append(ptf.tell())
+                ptf.seek(BlkLenBef[cntr], 1)
+                HdrList.append([])
+            else:
+                HdrList.append([])
+            BlkLenAft.append(unpack('I', ptf.read(4))[0])
+
+            cntr += 1
+    return available_vars, probemTitle
+
+
 class Ptf:
+    """ Class to extract, plot and compare data in PTF files """
     def __init__(self, path: typing.Union[str, os.PathLike]):
         self.path = path
-        # TODO: ugly temporary solution
-        #       rewrite MCRBin into different functions
-        time_range, _, _, variables, title = MCRBin(path, ["TIME"])
-        self._time_range = time_range
+        variables, title = inspect_ptf(path)
         self._title = title.strip()
         self._columns = variables
 
@@ -161,16 +261,8 @@ class Ptf:
         """Get the list of variables in PTF file."""
         return self._columns
 
-    @property
-    def time_range(self):
-        """Get the time range from PTF file data."""
-        return self._time_range
-
     def __str__(self) -> str:
-        text = f"PTF file of title {self.title}\n"
-        text += f"From {np.min(self.time_range)} s "
-        text += f"to {np.max(self.time_range)} s."
-        return text
+        return f"PTF file of title {self.title}"
 
     def to_DataFrame(self, columns: list):
         desired_cols = set(columns)
