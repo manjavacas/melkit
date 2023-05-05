@@ -9,6 +9,7 @@ melgen-fusion-186_bdba
 *.RST
 *.dia
 *.out
+*.ptf
 extDIAG
 MEGDIA
 MEGOUT
@@ -144,3 +145,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# editor settings
+.vscode
