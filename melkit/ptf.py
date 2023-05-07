@@ -14,16 +14,9 @@ import pandas as pd
 
 def MCRBin(ptf_path: typing.Union[str, os.PathLike], vars_to_search: list):
     """
-    # Taken from https://github.com/mattdon/MELCOR_pyPlot
-    # Commit 35a2503b49617622dec6ea8138c556697f6dd263
-    # modified
-    original header
-    MELCOR FORMAT SUPPORT MODULE
-    Created on March 28, 2017
-    Last update on October 14, 2022
-    @authors:
-             Matteo D'Onorio (University of Rome La Sapienza)
-             Paolo Balestra (University of Rome La Sapienza)
+    Read column names and values from MELCOR PTF file
+    Taken from https://github.com/mattdon/MELCOR_pyPlot, commit 35a2503,
+    modified
 
     This method is called to collect the variables to be used
     in the postprocess
