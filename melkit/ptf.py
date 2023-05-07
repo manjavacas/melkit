@@ -7,6 +7,7 @@ import numpy as np
 import os
 import typing
 from struct import unpack
+from pathlib import Path
 
 import pandas as pd
 
@@ -279,7 +280,8 @@ class Ptf:
         return df
 
 
-def compare_ptf(ptf_lst: list[Ptf], variables: list[str]):
+def compare_ptf(ptf_lst: list[Ptf], variables: list[str], save_dir=None,
+                plot=True, ret_df=True, **kwargs):
     """ Compare data from PTF files by plotting variables """
     df_list = [ptf.to_DataFrame(variables) for ptf in ptf_lst]
     titles = [ptf.title for ptf in ptf_lst]
@@ -287,4 +289,11 @@ def compare_ptf(ptf_lst: list[Ptf], variables: list[str]):
         var_list = [df[variable] for df in df_list]
         var_df = pd.concat(var_list, axis=1)
         var_df.columns = titles
-        var_df.plot(title=variable)
+        ax = var_df.plot(title=variable, **kwargs)
+        fig = ax.get_figure()
+        if plot:
+            fig.show()
+        if save_dir:
+            fig.savefig(Path(save_dir, f"{variable}.png"))
+    if ret_df:
+        return pd.concat(df_list)
