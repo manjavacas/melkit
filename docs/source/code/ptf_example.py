@@ -21,7 +21,13 @@ ptf_a.to_DataFrame([cols[:5]])
 
 # compare the first 2 varibles between files
 # only show plot
-compare_ptf([ptf_a, ptf_b, ptf_c], ["RN2-DFBBT-10-cls_7", "RN2-DFBBT-10-cls_8"])
+compare_ptf([ptf_a, ptf_b, ptf_c],
+            ["RN2-DFBBT-10-cls_7", "RN2-DFBBT-10-cls_8"])
 
 # compare, show plot and save them as png
-compare_ptf([ptf_a, ptf_b, ptf_c], ["RN2-DFBBT-10-cls_7", "RN2-DFBBT-10-cls_8"], save_dir="out")
+compare_ptf([ptf_a, ptf_b, ptf_c],
+            ["RN2-DFBBT-10-cls_7", "RN2-DFBBT-10-cls_8"], save_dir="out")
+
+# plot some variables from one file
+ptf_a.plot(["RN2-DFBBT-10-cls_7", "RN2-DFBBT-10-cls_8"],
+           output_path="out/RN2_cl78.png")

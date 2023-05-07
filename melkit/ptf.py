@@ -271,6 +271,19 @@ class Ptf:
             data=data,
         )
         return df
+    
+    def plot(self, variables, output_path=None, **kwargs):
+        """ Plot variables of PTF file against time. Optionally save plot fig
+        """
+        df = self.to_DataFrame(variables)
+        ax = df.plot(**kwargs)
+        fig = ax.get_figure()
+        fig.show()
+        if output_path:
+            out_dir = os.path.dirname(output_path)
+            if not os.path.exists(out_dir):
+                os.makedirs(out_dir)
+            fig.savefig(output_path)
 
 
 def compare_ptf(ptf_lst: list[Ptf], variables: list[str], save_dir=None,
