@@ -294,6 +294,8 @@ def compare_ptf(ptf_lst: list[Ptf], variables: list[str], save_dir=None,
         if plot:
             fig.show()
         if save_dir:
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
             fig.savefig(Path(save_dir, f"{variable}.png"))
     if ret_df:
         return pd.concat(df_list)
