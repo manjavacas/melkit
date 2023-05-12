@@ -6,14 +6,14 @@ labels: Bug report
 assignees: ''
 ---
 
-# Issue
+## Bug description
 
 <!--- A clear and concise description of the issue. -->
 
-# Additional context
+## Additional context
 
-<!--- Any kind of information for replicating it. -->
+<!--- Any kind of information regarding the error or how to replicate it. -->
 
-# Proposed solution
+## Proposed solution
 
 <!--- A proposed way to address the issue. -->
