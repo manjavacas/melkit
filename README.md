@@ -10,10 +10,10 @@ A multi-purpose Python toolkit designed to facilitate the handling of MELCOR `1.
 
 ## ⚙️ Utilities
 
-- Control Volumes (`CVs`), Flow Paths (`FLs`) and Control Functions (`CFs`) querying and edition.
-- `PTF` and `EDF` visualization tools.
-- Extraction of `CVs` and `FL` connections for a given `CV`.
-- Extraction of `CFs` associated with a given `FL`, including recursive extraction of inter-dependent `CFs`.
+- Control Volumes (CVs), Flow Paths (FLs) and Control Functions (CFs) querying and edition.
+- PTF and EDF visualization tools.
+- Extraction of CVs and FL connections for a given CV.
+- Extraction of CFs associated with a given FL, including recursive extraction of inter-dependent CFs.
 - Auxiliary tools (comments deletion, duplicates checking...).
 - And more!
 
