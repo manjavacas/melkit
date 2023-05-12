@@ -2,7 +2,7 @@
 
 # MELKIT
 
-A multi-purpose Python toolkit designed to facilitate the handling of MELCOR/MELGEN `1.8.6` files.
+A multi-purpose Python toolkit designed to facilitate the handling of MELCOR `1.8.6` files.
 
 <p align="center">
     <img src="./img/logo.png" alt="drawing" width="150"/>
