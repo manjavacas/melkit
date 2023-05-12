@@ -5,8 +5,8 @@ Examples
 
 In this section, some basic usage examples of MELKIT are shown.
 
-File reading
-------------
+Input file reading
+------------------
 
 .. literalinclude:: ../code/read.py
 
@@ -24,3 +24,8 @@ Auxiliary tools
 ---------------
 
 .. literalinclude:: ../code/aux_tools.py
+
+PTF file reading and visualization
+----------------------------------
+
+.. literalinclude:: ../code/ptf_example.py

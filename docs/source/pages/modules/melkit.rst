@@ -31,5 +31,6 @@
    melkit.constants
    melkit.exceptions
    melkit.inputs
+   melkit.ptf
    melkit.toolkit
 
