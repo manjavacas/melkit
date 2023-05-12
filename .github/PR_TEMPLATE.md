@@ -1,12 +1,13 @@
 
-# Description
+## PR description
 <!--- Describe your changes in detail --->
 
-# Related issues
+## Related issues
 <!--- Use the syntax `fixes #100` if this solves the issue #100 -->
 
-# Types of changes
+## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
+
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
@@ -14,14 +15,14 @@
 - [ ] Improvement (of an existing feature)
 - [ ] Others
 
-# Checklist
+## Checklist
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
+
 - [ ] I have raised an issue to propose this change.
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
 - [ ] I have reformatted the code.
 - [ ] I have ensured `cd docs && make spelling && make html` pass (**required** if documentation has been updated.)
 
-# Changelog
-
-- <!--- List changes here --->
+## Changelog
+<!--- List your changes here --->
