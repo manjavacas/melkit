@@ -1,5 +1,5 @@
 ---
-name: "FEATURE"
+name: "🛠️ FEATURE"
 about: Propose a new feature
 title: "[FEATURE]:"
 labels: Feature proposal
