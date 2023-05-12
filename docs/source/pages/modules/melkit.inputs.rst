@@ -1,4 +1,4 @@
-﻿melkit.inputs
+melkit.inputs
 =============
 
 .. automodule:: melkit.inputs

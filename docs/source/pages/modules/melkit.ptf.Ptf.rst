@@ -1,4 +1,4 @@
-﻿melkit.ptf.Ptf
+melkit.ptf.Ptf
 ==============
 
 .. currentmodule:: melkit.ptf
