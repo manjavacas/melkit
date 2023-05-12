@@ -19,7 +19,7 @@ A multi-purpose Python toolkit designed to facilitate the handling of MELCOR/MEL
 
 ## ▶️ Installation
 
-Install `MELKIT` via PyPI:
+Install MELKIT via [PyPI](https://pypi.org/project/melkit/):
 
 ```bash
 pip install melkit
