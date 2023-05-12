@@ -18,7 +18,9 @@ cols = ptf_a.columns
 print(cols)
 
 # load subset of columns (first 5) and convert it to pandas DataFrame
-ptf_a.to_DataFrame(cols[:5])
+df = ptf_a.to_DataFrame(cols[:5])
+df.to_csv("ptf_a_col0to4.csv")
+
 
 # compare the first 2 varibles between files
 # only show plot
