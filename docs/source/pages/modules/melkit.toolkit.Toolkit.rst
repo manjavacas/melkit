@@ -1,4 +1,4 @@
-﻿melkit.toolkit.Toolkit
+melkit.toolkit.Toolkit
 ======================
 
 .. currentmodule:: melkit.toolkit
@@ -17,12 +17,9 @@
    
       ~Toolkit.__init__
       ~Toolkit.as_dataframe
-      ~Toolkit.available_to_csv
+      ~Toolkit.clear_objects
       ~Toolkit.create_submodel
       ~Toolkit.get_available_ids
-      ~Toolkit.get_cf
-      ~Toolkit.get_cf_list
-      ~Toolkit.get_connected_cfs
       ~Toolkit.get_connected_cvs
       ~Toolkit.get_cv
       ~Toolkit.get_cv_list
@@ -38,9 +35,11 @@
       ~Toolkit.plot_edf
       ~Toolkit.remove_comments
       ~Toolkit.remove_object
+      ~Toolkit.remove_objects
       ~Toolkit.update_object
-      ~Toolkit.used_to_csv
+      ~Toolkit.update_objects
       ~Toolkit.write_object
+      ~Toolkit.write_objects
    
    
 

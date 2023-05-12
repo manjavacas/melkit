@@ -1,4 +1,4 @@
-﻿melkit.inputs
+melkit.inputs
 =============
 
 .. automodule:: melkit.inputs
@@ -19,7 +19,6 @@
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      CF
       CV
       FL
       Object
