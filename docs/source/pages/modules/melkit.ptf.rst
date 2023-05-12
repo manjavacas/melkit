@@ -1,4 +1,4 @@
-melkit.ptf
+﻿melkit.ptf
 ==========
 
 .. automodule:: melkit.ptf
@@ -14,9 +14,7 @@ melkit.ptf
    .. autosummary::
       :toctree:                                          
    
-      MCRBin
       compare_ptf
-      inspect_ptf
    
    
 
@@ -28,7 +26,7 @@ melkit.ptf
       :toctree:                                          
       :template: custom-class-template.rst               
    
-      Ptf
+      PTF
    
    
 

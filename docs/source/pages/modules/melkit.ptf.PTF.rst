@@ -1,9 +1,9 @@
-melkit.ptf.Ptf
+melkit.ptf.PTF
 ==============
 
 .. currentmodule:: melkit.ptf
 
-.. autoclass:: Ptf
+.. autoclass:: PTF
    :members:                                                           
    :undoc-members:               
 
@@ -15,8 +15,10 @@ melkit.ptf.Ptf
 
    .. autosummary::
    
-      ~Ptf.__init__
-      ~Ptf.to_DataFrame
+      ~PTF.MCRBin
+      ~PTF.__init__
+      ~PTF.plot
+      ~PTF.to_DataFrame
    
    
 
@@ -26,7 +28,7 @@ melkit.ptf.Ptf
 
    .. autosummary::
    
-      ~Ptf.columns
-      ~Ptf.title
+      ~PTF.columns
+      ~PTF.title
    
    
