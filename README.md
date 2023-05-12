@@ -32,7 +32,7 @@ The `Toolkit` class is all you need to start working with MELKIT.
 ```python
 from melkit.toolkit import Toolkit
 
-toolkit = Toolkit(filename)
+toolkit = Toolkit('file.inp')
 
 cvs = toolkit.read_cvs()
 fls = toolkit.read_fls()
