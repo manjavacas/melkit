@@ -1,4 +1,4 @@
-[![Release](https://badgen.net/github/release/manjavacas/melkit)]() [![License](https://badgen.net/github/license/manjavacas/melkit)]() [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
+[![Release](https://badgen.net/github/release/manjavacas/melkit)]() ![License](https://img.shields.io/badge/license-GPLv3-blue) [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
 
 # MELKIT
 
