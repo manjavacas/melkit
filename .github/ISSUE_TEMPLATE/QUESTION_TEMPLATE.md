@@ -6,10 +6,10 @@ labels: Question
 assignees: ''
 ---
 
-# Question
+## Question
 
 <!--- Ask your question here. -->
 
-# Additional context
+## Additional context
 
 <!--- Any kind of information to help addressing this question. -->
