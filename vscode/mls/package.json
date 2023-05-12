@@ -1,0 +1,25 @@
+{
+  "name": "mls",
+  "displayName": "MLS",
+  "description": "MELCOR Language Support",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "melcor",
+      "aliases": ["MELCOR", "melcor"],
+      "extensions": [".inp"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "melcor",
+      "scopeName": "source.inp",
+      "path": "./syntaxes/melcor.tmLanguage.json"
+    }]
+  }
+}

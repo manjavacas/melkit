@@ -1,0 +1,44 @@
+{
+	"name": "MELCOR",
+	"scopeName": "source.inp",
+	"patterns": [
+	  {
+		"name": "keyword.melgen",
+		"match": "(?i)\\b(title|jobid|restartf|outputf|diagf|stopf|crtout|tstart|noflush|DTTIME|RESTARTFILE|OUTPUTFILE|PLOTFILE|DIAGFILE|MESSAGEFILE|CPULEFT|CPULIM|CYMESF|RESTART|TEND|SOFTDTMIN|TIME\\d{1})\\b"
+	  },
+	  {
+		"name": "keyword.fl",
+		"match": "\\bFL\\d{3}[A-Za-z\\d]{2}\\b"
+	  },
+	  {
+		"name": "keyword.cv",
+		"match": "\\bCV\\d{3}[A-Za-z\\d]{2}\\b"
+	  },
+	  {
+		"name": "keyword.cf",
+		"match": "\\bCF\\d{5}\\b"
+	  },
+	  {
+		"name": "keyword.tf",
+		"match": "\\bTF\\d{5}\\b"
+	  },
+	  {
+		"name": "keyword.ncg",
+		"match": "\\bNCG\\d{3}\\b"
+	  },
+	  {
+		"name": "keyword.edf",
+		"match": "\\bEDF\\d{3}[A-Za-z\\d]{2}\\b"
+	  },
+	  {
+		"name": "comment",
+		"match": "\\*.*?$",
+		"captures": {
+		  "0": {
+			"name": "punctuation.definition.comment.melcor"
+		  }
+		}
+	  }
+	]
+  }
+  

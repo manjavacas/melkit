@@ -21,5 +21,12 @@ toolkit.get_duplicated(fls)
 toolkit.get_available_ids(fls)
 
 # Get connections for a given CV
-toolkit.get_fl_connections(cv)
-toolkit.get_connected_cvs(cv)
+toolkit.get_fl_connections('CV001')
+toolkit.get_connected_cvs('CV001')
+
+# Recursively, obtain related CFs
+for cf in toolkit.get_connected_cfs('FL001'):
+    print(cf)
+
+for cf in toolkit.get_connected_cfs('CF001'):
+    print(cf)
