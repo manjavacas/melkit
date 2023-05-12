@@ -1,4 +1,4 @@
-melkit.ptf.Ptf
+﻿melkit.ptf.Ptf
 ==============
 
 .. currentmodule:: melkit.ptf
@@ -16,6 +16,7 @@ melkit.ptf.Ptf
    .. autosummary::
    
       ~Ptf.__init__
+      ~Ptf.plot
       ~Ptf.to_DataFrame
    
    
