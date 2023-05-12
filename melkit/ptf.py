@@ -19,7 +19,7 @@ class PTF:
 
     def __init__(self, path: Union[str, os.PathLike]):
         self.path = path
-        variables, title = self._inspect_ptf(path)
+        variables, title = self._inspect_ptf()
         self._title = title.strip()
         self._columns = variables
 
