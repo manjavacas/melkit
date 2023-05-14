@@ -6,7 +6,7 @@ Examples
 In this section, some basic usage examples of MELKIT are shown.
 
 Input file reading
-------------------
+-------------------
 
 .. literalinclude:: ../code/read.py
 

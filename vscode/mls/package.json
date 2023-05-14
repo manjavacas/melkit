@@ -1,8 +1,10 @@
 {
   "name": "mls",
+  "publisher": "manjavacas",
   "displayName": "MLS",
   "description": "MELCOR Language Support",
-  "version": "0.0.1",
+  "icon": "mls.png",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.76.0"
   },
@@ -10,16 +12,29 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "melcor",
-      "aliases": ["MELCOR", "melcor"],
-      "extensions": [".inp"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "melcor",
-      "scopeName": "source.inp",
-      "path": "./syntaxes/melcor.tmLanguage.json"
-    }]
+    "languages": [
+      {
+        "id": "melcor",
+        "aliases": [
+          "MELCOR",
+          "melcor"
+        ],
+        "extensions": [
+          ".inp"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "melcor",
+        "scopeName": "source.inp",
+        "path": "./syntaxes/melcor.tmLanguage.json"
+      }
+    ]
+  },
+  "dependencies": {
+    "@vscode/vsce": "^2.19.0",
+    "vsce": "^1.97.0"
   }
 }
