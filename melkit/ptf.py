@@ -334,4 +334,4 @@ def compare_ptf(ptf_lst: List[PTF], variables: List[str],
                 os.makedirs(save_dir)
             fig.savefig(Path(save_dir, f"{variable}.png"))
     if ret_df:
-        return pd.concat(df_list)
+        return pd.concat(df_list, axis="columns")
