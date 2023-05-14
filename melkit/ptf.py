@@ -15,6 +15,8 @@ import pandas as pd
 class PTF:
     '''
     PTF file tool - extract, plot and compare data in PTF files
+
+    :param path: a path to Melcor PTF file to be processed
     '''
 
     def __init__(self, path: Union[str, os.PathLike]):
@@ -36,16 +38,20 @@ class PTF:
     def __str__(self) -> str:
         return f"PTF file titled {self.title}"
 
-    def to_DataFrame(self, columns: List[str]) -> pd.DataFrame:
-        desired_cols = set(columns)
+    def to_DataFrame(self, variables: List[str]) -> pd.DataFrame:
+        """ Extracts given variables into pandas DataFrame
+        each variable is 1 column in the DataFrame
+        :param variables: a list of variables to be extracted; note that extracting large amount of variables might be I/O expensive
+        """
+        desired_cols = set(variables)
         available_cols = set(self.columns)
         if not desired_cols.issubset(available_cols):
             raise KeyError(f"Desired columns {desired_cols - available_cols} "
                            f"are not available in PTF {self.title}")
-        time, data, units, _, _ = self.MCRBin(columns)
+        time, data, units, _, _ = self.MCRBin(variables)
         df = pd.DataFrame(
             index=time,
-            columns=columns,
+            columns=variables,
             data=data,
         )
         return df
@@ -54,7 +60,10 @@ class PTF:
              output_path: Union[str, os.PathLike] = None, **kwargs
              ) -> None:
         '''
-        Plot variables of PTF file against time. Optionally save plot fig
+        Plot variables of PTF file against time. Optionally save plot figure
+
+        :param variables: list of variables to be plotted (in a single figure)
+        :param output_path: relative path where the figure should be saved; if not provided, figure is not saved (only shows)
         '''
         df = self.to_DataFrame(variables)
         ax = df.plot(**kwargs)
@@ -68,9 +77,14 @@ class PTF:
 
     def MCRBin(self, vars_to_search: List[str]):
         '''
-        Read column names and values from MELCOR PTF file
+        Reads column names, values, units and title from MELCOR PTF file
         Taken from https://github.com/mattdon/MELCOR_pyPlot, commit 35a2503,
         modified
+
+        **TODO**: currently rather not-understood legacy code
+            to be rewritten soon for readability
+
+        **Original description**
 
         This method is called to collect the variables to be used
         in the postprocess
@@ -150,7 +164,8 @@ class PTF:
                             if element == 0:
                                 available_vars.append(str(key).strip())
                             else:
-                                available_vars.append(key.strip()+'_%d' % element)
+                                available_vars.append(
+                                    key.strip()+'_%d' % element)
                     for i, item in enumerate(itm_x_Var):
                         for k in range(0, item):
                             VarUdmFull.append(VarUdm[i].strip())
@@ -258,7 +273,8 @@ class PTF:
                             if element == 0:
                                 available_vars.append(str(key).strip())
                             else:
-                                available_vars.append(key.strip()+'_%d' % element)
+                                available_vars.append(
+                                    key.strip()+'_%d' % element)
                     for i, item in enumerate(itm_x_Var):
                         for k in range(0, item):
                             VarUdmFull.append(VarUdm[i].strip())
@@ -292,9 +308,17 @@ class PTF:
 
 def compare_ptf(ptf_lst: List[PTF], variables: List[str],
                 save_dir: Union[str, os.PathLike] = None,
-                plot: bool = True, ret_df: bool = True, **kwargs
+                show: bool = True, ret_df: bool = True, **kwargs
                 ) -> Union[None, pd.DataFrame]:
-    ''' Compare data from PTF files by plotting variables '''
+    '''
+    Compare data from PTF files by plotting variables
+
+    :param ptf_lst: list of PTF objects to be compared
+    :param variables: list of varibles to be compared. KeyError is raised is any of variables is not present in any of the files
+    :param save_dir: relative path to directory to save the figures - if not provided, figures are not saved
+    :param show: if True, figures will show
+    :param ret_df: if True, function returns pandas DataFrame with all variables from all files
+    '''
     df_list = [ptf.to_DataFrame(variables) for ptf in ptf_lst]
     titles = [ptf.title for ptf in ptf_lst]
     for variable in variables:
@@ -303,7 +327,7 @@ def compare_ptf(ptf_lst: List[PTF], variables: List[str],
         var_df.columns = titles
         ax = var_df.plot(title=variable, **kwargs)
         fig = ax.get_figure()
-        if plot:
+        if show:
             fig.show()
         if save_dir:
             if not os.path.exists(save_dir):

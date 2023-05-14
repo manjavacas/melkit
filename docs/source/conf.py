@@ -27,6 +27,8 @@ exclude_patterns = []
 autosummary_generate = True
 pygments_style = 'sphinx'
 
+autodoc_typehints = "description"
+
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
