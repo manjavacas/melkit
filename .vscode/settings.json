@@ -1,0 +1,11 @@
+{
+    "[melcor]": {
+        "editor.foldingStrategy": "auto",
+        "editor.foldingRules": {
+            "block": {
+                "open": "^\\s*\\*{7,}\\s*$",
+                "close": "^\\s*\\*{7,}\\s*$"
+            }
+        }
+    }
+}
