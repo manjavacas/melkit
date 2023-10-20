@@ -150,4 +150,4 @@ dmypy.json
 .pyre/
 
 # editor settings
-.vscode
+# .vscode
