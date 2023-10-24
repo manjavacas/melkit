@@ -50,19 +50,19 @@ class Toolkit:
         '''
         Looks for CVs in the input file and returns them as a list of CV objects.
         '''
-        return self._read_object(r'\bCV\d{3}00\b')
+        return self._read_object(r'\b\s*CV\d{3}00\b')
 
     def _read_fls(self) -> List[FL]:
         '''
         Looks for FLs in the input file and returns them as a list of FL objects.
         '''
-        return self._read_object(r'\bFL\d{3}00\b')
+        return self._read_object(r'\b\s*FL\d{3}00\b')
 
     def _read_cfs(self) -> List[CF]:
         '''
         Looks for CFs in the input file and returns them as a list of CF objects.
         '''
-        return self._read_object(r'\bCF\d{3,8}00\b')
+        return self._read_object(r'\b\s*CF\d{3,8}00\b')
 
     def get_cv(self, cv_id: str) -> CV:
         '''
@@ -343,7 +343,7 @@ class Toolkit:
         keys = ['TIME']
         with open(self._filename, 'r') as file:
             for line in file:
-                if match(r'\bEDF\d{3}[A-Z][A-Z0-9]', line):
+                if match(r'\b\s*EDF\d{3}[A-Z][A-Z0-9]', line):
                     keys.append(line.split()[1])
         return keys
 
