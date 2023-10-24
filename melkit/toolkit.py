@@ -36,33 +36,35 @@ class Toolkit:
         ids, objs = [], []
         with open(self._filename, 'r') as file:
             for line in file:
-                id = search(id_regex, line)
-                if id and id not in ids:
-                    if 'CV' in id_regex:
-                        objs.append(self.get_cv(id.group()[:-2]))
-                    elif 'FL' in id_regex:
-                        objs.append(self.get_fl(id.group()[:-2]))
-                    elif 'CF' in id_regex:
-                        objs.append(self.get_cf(id.group()[:-2]))
+                line = line.lstrip()
+                if not line.startswith('*'):
+                    id = search(id_regex, line)
+                    if id and id not in ids:
+                        if 'CV' in id_regex:
+                            objs.append(self.get_cv(id.group()[:-2]))
+                        elif 'FL' in id_regex:
+                            objs.append(self.get_fl(id.group()[:-2]))
+                        elif 'CF' in id_regex:
+                            objs.append(self.get_cf(id.group()[:-2]))
         return objs
 
     def _read_cvs(self) -> List[CV]:
         '''
         Looks for CVs in the input file and returns them as a list of CV objects.
         '''
-        return self._read_object(r'\s*\bCV\d{3}00\b')
+        return self._read_object(r'\bCV\d{3}00\b')
 
     def _read_fls(self) -> List[FL]:
         '''
         Looks for FLs in the input file and returns them as a list of FL objects.
         '''
-        return self._read_object(r'\s*\bFL\d{3}00\b')
+        return self._read_object(r'\bFL\d{3}00\b')
 
     def _read_cfs(self) -> List[CF]:
         '''
         Looks for CFs in the input file and returns them as a list of CF objects.
         '''
-        return self._read_object(r'\s*\bCF\d{3,8}00\b')
+        return self._read_object(r'\bCF\d{3,8}00\b')
 
     def get_cv(self, cv_id: str) -> CV:
         '''
@@ -280,7 +282,7 @@ class Toolkit:
 
         with open(src_file, 'r') as f1, open(new_file, 'w') as f2:
             for line in f1:
-                if not line.startswith(obj_id):
+                if not line.lstrip().startswith(obj_id):
                     f2.write(line)
 
         if overwrite:
@@ -343,7 +345,7 @@ class Toolkit:
         keys = ['TIME']
         with open(self._filename, 'r') as file:
             for line in file:
-                if match(r'\s*\bEDF\d{3}[A-Z][A-Z0-9]', line):
+                if match(r'\bEDF\d{3}[A-Z][A-Z0-9]', line.lstrip()):
                     keys.append(line.split()[1])
         return keys
 
