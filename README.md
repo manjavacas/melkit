@@ -3,13 +3,11 @@
 <!--- [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
 -->
 
-# MELKIT
-
-A multi-purpose Python toolkit designed to easily edit and query MELCOR 1.8.6 files.
-
 <p align="center">
-    <img src="./img/logo.png" alt="drawing" width="150"/>
+    <img src="./img/logo.png" alt="drawing" width="200"/>
 </p>
+
+A multi-purpose Python toolkit designed to easily edit and query [MELCOR](https://melcor.sandia.gov/) 1.8.6 files.
 
 ## ⚙️ Utilities
 
