@@ -1,17 +1,18 @@
-[![Release](https://badgen.net/github/release/manjavacas/melkit)]() ![License](https://img.shields.io/badge/license-GPLv3-blue) [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() 
-
-<!--- [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
--->
 
 <p align="center">
     <img src="./img/logo.png" alt="drawing" width="200"/>
 </p>
 
+
+[![Release](https://badgen.net/github/release/manjavacas/melkit)]() ![License](https://img.shields.io/badge/license-GPLv3-blue) [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() 
+<!--- [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
+-->
+
 A multi-purpose Python toolkit designed to easily edit and query [MELCOR](https://melcor.sandia.gov/) 1.8.6 files.
 
 ## ⚙️ Utilities
 
-- Control Volumes (CVs), Flow Paths (FLs) and Control Functions (CFs) querying and edition.
+- Control Volumes (CVs), Flow Paths (FLs) and Control Functions (CFs) querying and modification.
 - PTF and EDF visualization tools.
 - Extraction of CVs and FL connections for a given CV.
 - Extraction of CFs associated with a given FL, including recursive extraction of inter-dependent CFs.
