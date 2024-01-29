@@ -1,8 +1,11 @@
-[![Release](https://badgen.net/github/release/manjavacas/melkit)]() ![License](https://img.shields.io/badge/license-GPLv3-blue) [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
+[![Release](https://badgen.net/github/release/manjavacas/melkit)]() ![License](https://img.shields.io/badge/license-GPLv3-blue) [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() 
+
+<!--- [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
+-->
 
 # MELKIT
 
-A multi-purpose Python toolkit designed to facilitate the handling of MELCOR 1.8.6 files.
+A multi-purpose Python toolkit designed to easily edit and query MELCOR 1.8.6 files.
 
 <p align="center">
     <img src="./img/logo.png" alt="drawing" width="150"/>
