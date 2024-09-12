@@ -5,7 +5,8 @@ melkit.inputs.CV
 
 .. autoclass:: CV
    :members:                                                           
-   :undoc-members:               
+   :undoc-members:     
+   :private-members:          
 
    
    .. automethod:: __init__
@@ -22,6 +23,6 @@ melkit.inputs.CV
    
    
 
-   
-   
-   
+   .. 
+   .. 
+   .. 

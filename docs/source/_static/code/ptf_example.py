@@ -1,8 +1,10 @@
 '''
 Loading PTF files
+
+THIS IS LEGACY CODE THAT MAY NOT WORK. For more details, see: https://github.com/manjavacas/melkit/pull/21
 '''
 
-from melkit.ptf import Ptf, compare_ptf
+from melkit._ptf import Ptf, compare_ptf
 
 PATH_A = 'calcA/MELPTF'
 PATH_B = 'calcB/MELPTF'

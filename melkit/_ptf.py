@@ -1,15 +1,17 @@
 '''
 Module for handling PTF files
+
+THIS IS LEGACY CODE THAT MAY NOT WORK. For more details, see: https://github.com/manjavacas/melkit/pull/21
 '''
 
 
 import numpy as np
+import pandas as pd
 import os
 import typing
+
 from struct import unpack
 from pathlib import Path
-
-import pandas as pd
 
 
 def MCRBin(ptf_path: typing.Union[str, os.PathLike], vars_to_search: list):
@@ -239,6 +241,7 @@ def inspect_ptf(ptf_path: typing.Union[str, os.PathLike]):
 
 class Ptf:
     """ Class to extract, plot and compare data in PTF files """
+
     def __init__(self, path: typing.Union[str, os.PathLike]):
         self.path = path
         variables, title = inspect_ptf(path)
@@ -271,7 +274,7 @@ class Ptf:
             data=data,
         )
         return df
-    
+
     def plot(self, variables, output_path=None, **kwargs):
         """ Plot variables of PTF file against time. Optionally save plot fig
         """

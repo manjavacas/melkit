@@ -5,7 +5,8 @@ melkit.inputs.Object
 
 .. autoclass:: Object
    :members:                                                           
-   :undoc-members:               
+   :undoc-members:     
+   :private-members:          
 
    
    .. automethod:: __init__
@@ -22,6 +23,6 @@ melkit.inputs.Object
    
    
 
-   
-   
-   
+   .. 
+   .. 
+   .. 

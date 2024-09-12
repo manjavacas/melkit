@@ -1,11 +1,12 @@
-﻿melkit.toolkit.Toolkit
+melkit.toolkit.Toolkit
 ======================
 
 .. currentmodule:: melkit.toolkit
 
 .. autoclass:: Toolkit
    :members:                                                           
-   :undoc-members:               
+   :undoc-members:     
+   :private-members:          
 
    
    .. automethod:: __init__
@@ -44,6 +45,6 @@
    
    
 
-   
-   
-   
+   .. 
+   .. 
+   .. 

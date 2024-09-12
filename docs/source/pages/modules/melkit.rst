@@ -2,7 +2,8 @@
 ======
 
 .. automodule:: melkit
-  
+   :private-members:   
+
    
    
    
@@ -28,9 +29,8 @@
    :template: custom-module-template.rst                
    :recursive:
 
-   melkit.constants
-   melkit.exceptions
-   melkit.inputs
-   melkit.ptf
-   melkit.toolkit
+   constants
+   exceptions
+   inputs
+   toolkit
 

@@ -2,7 +2,8 @@ melkit.toolkit
 ==============
 
 .. automodule:: melkit.toolkit
-  
+   :private-members:   
+
    
    
    

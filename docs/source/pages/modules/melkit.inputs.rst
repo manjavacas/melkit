@@ -2,7 +2,8 @@ melkit.inputs
 =============
 
 .. automodule:: melkit.inputs
-  
+   :private-members:   
+
    
    
    

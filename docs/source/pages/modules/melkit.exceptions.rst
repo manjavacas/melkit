@@ -2,7 +2,8 @@ melkit.exceptions
 =================
 
 .. automodule:: melkit.exceptions
-  
+   :private-members:   
+
    
    
    
