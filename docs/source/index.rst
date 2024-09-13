@@ -2,9 +2,9 @@
 MELKIT documentation
 ====================
 
-.. image:: ./_static/images/logo.png
+.. image:: ./_static/images/header.svg
     :align: center
-    :scale: 80 %
+ 
 
 **MELKIT** is a multi-purpose Python toolkit designed to easily edit and query `MELCOR 1.8.6 <https://en.wikipedia.org/wiki/MELCOR>`_ files.
 
