@@ -8,6 +8,7 @@
 ![License](https://img.shields.io/badge/license-GPLv3-blue)
 [![Contributors](https://badgen.net/github/contributors/manjavacas/melkit)]() 
 [![Documentation Status](https://readthedocs.org/projects/melkit/badge/?version=latest)](https://melkit.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/589491697.svg)](https://doi.org/10.5281/zenodo.13885970)
 
 
 **MELKIT** is a multi-purpose Python toolkit designed to easily edit and query [MELCOR 1.8.6](https://melcor.sandia.gov/) files.
